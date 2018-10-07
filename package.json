@@ -2,5 +2,9 @@
   "name": "dist-bot",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon src/index.js"
+  }
 }
