@@ -12,12 +12,16 @@
     "build": "del-cli build && tsc",
     "nodemon": "nodemon -w build/",
     "watch": "tsc -w",
-    "start": "concurrently --kill-others \"npm run watch\" \"npm run nodemon\" "
+    "start": "concurrently --kill-others \"npm run watch\" \"npm run nodemon\" ",
+    "populate": "npm run build && node ./build/populate "
   },
   "dependencies": {
     "lodash": "^4.17.11",
+    "moment": "^2.22.2",
     "mongodb": "^3.1.6",
-    "node-telegram-bot-api": "^0.30.0"
+    "node-telegram-bot-api": "^0.30.0",
+    "phantom-html-to-pdf": "^0.5.6",
+    "phantomjs-prebuilt": "^2.1.16"
   },
   "devDependencies": {
     "@types/mongodb": "^3.1.10",
