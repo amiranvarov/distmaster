@@ -57,29 +57,4 @@ export async function chooseQuantity ({text, from}, bot) {
     );
     bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', await Keyboard.generatePositions(await Position.getNames()));
     return;
-
-    // if (product.taste) {
-    //     await User.updateAction(
-    //         from.id,
-    //         Actions.CHOOSE_TASTE,
-    //         {
-    //             product: product._id
-    //         }
-    //     );
-    //     bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', Keyboard.generateFlavors(product.tastes));
-    //     return;
-    // }
-    //
-    // if (product.sizes && product.sizes.length > 1) {
-    //     await User.updateAction(
-    //         from.id,
-    //         Actions.CHOOSE_SIZE,
-    //         {
-    //             product: product._id
-    //         }
-    //     );
-    //     bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', Keyboard.generateSizes(product));
-    //     return;
-    // }
-
 }
