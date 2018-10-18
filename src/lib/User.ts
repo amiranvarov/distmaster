@@ -12,7 +12,9 @@ export default class User {
             }
         };
         if (payload) {
-            updateQuery['$set']['action.payload'] = payload;
+            for (let key in payload) {
+                updateQuery['$set'][`action.payload.${key}`] = payload[key];
+            }
         }
 
         await DB.mongo.collection('users')
@@ -49,12 +51,21 @@ export default class User {
     }
 
     static async getProduct (userId) {
-        const { action } = await DB.mongo.collection('users').findOne({tg_id: userId});
-        const product = await DB.mongo.collection('positions').findOne({_id: new ObjectID(action.payload.product)});
-        return product
+        const { action: {payload} } = await DB.mongo.collection('users').findOne({tg_id: userId});
+        const filter: any = {};
+
+        if (payload.product_id) {
+            filter._id = new ObjectID(payload.product_id)
+        } else if (payload.name) {
+            filter.name = payload.name;
+        } else if (payload.size) {
+            filter.size = payload.size;
+        }
+
+        return await DB.mongo.collection('positions').findOne(filter);
     }
 
-    static async addToCard (userId: string, product: {position_id: number, size?: string, taste?: string, quantity: number, price: number, name: string}) {
+    static async addToCard (userId: string, product: {position_id: number, quantity: number}) {
         await DB.mongo.collection('users').updateOne(
             {tg_id: userId},
             {

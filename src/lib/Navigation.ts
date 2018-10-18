@@ -1,15 +1,20 @@
 import DB from '../db'
 import * as Actions from '../actions-constants'
 import User from "./User";
+import Position from '../Model/Position'
 import Keyboard from "./Keyboard";
 import { BOT } from '../lib/Messanger'
 import Basket from "./Basket";
+import Order from './Order';
+import * as PDF from '../lib/PDF'
+import * as moment from 'moment';
+import  { getOrderStatusLocale } from '../lib/locale'
 
 
 export async function generateFromAction (action, userId: string) {
     switch (action) {
         case Actions.CHOOSE_QUANTITY:
-            await chooseQuantityView(userId);
+            await chooseQuantityView({userId});
             break;
         case Actions.CHOOSE_POSITION:
             await choosePositionsView(userId);
@@ -20,31 +25,64 @@ export async function generateFromAction (action, userId: string) {
     }
 }
 
-export async function chooseQuantityView(userId: string, payload = undefined) {
-    await User.updateAction(
-        userId,
-        Actions.CHOOSE_QUANTITY,
-        payload
+// refer from chooseSize
+export async function chooseQuantityView({userId, productName, selectedSize}) {
+    let product;
+
+    if (productName && selectedSize) {
+        product = await Position.getOne({name: productName, size: selectedSize});
+    } else {
+        product = await User.getProduct(userId);
+    }
+
+    await DB.mongo.collection('users')
+        .updateOne(
+            {tg_id: userId},
+            {
+                $set: {
+                    'action.type': Actions.CHOOSE_QUANTITY,
+                    'action.payload': {
+                        product_id: product._id
+                    }
+                }
+            }
+        );
+
+    BOT.sendMessage(userId,
+        `Выберите или введите количество упаковок. В одной упаковке ${product.pack} штук.`,
+        Keyboard.generateQuantity(userId, product.pack)
     );
-    BOT.sendMessage(userId, 'Выберите или введите количество:', Keyboard.generateQuantity());
 }
 
 export async function choosePositionsView(userId) {
-    const positions = await DB.mongo.collection('positions').find().toArray();
-    await User.updateAction(userId, Actions.CHOOSE_POSITION);
-    BOT.sendMessage(userId, 'Выберите позицию', Keyboard.generatePositions(positions));
+    const positionsNames = await Position.getNames();
+    await DB.mongo.collection('users')
+        .updateOne(
+            {tg_id: userId},
+            {
+                $set: {
+                    action: {
+                        type: Actions.CHOOSE_POSITION
+                    }}
+                }
+        );
+    BOT.sendMessage(userId, 'Выберите позицию', await Keyboard.generatePositions(positionsNames));
 }
 
-export async function chooseSizeView(userId, product?: any) {
-    if (!product) {
+export async function chooseSizeView({userId, name} : {userId: string, name?: string}) {
+    let product;
+
+    if (!name) {
         product = await User.getProduct(userId);
     }
+
     await User.updateAction(
         userId,
         Actions.CHOOSE_SIZE,
-        { product: product._id }
+        { name }
     );
-    BOT.sendMessage(userId, 'Выберите размер', Keyboard.generateSizes(product));
+    const productSizes = await Position.getSizes({name: name || product.name});
+    BOT.sendMessage(userId, 'Выберите размер', Keyboard.generateSizes(productSizes));
 }
 
 export async function basketView (userId, prevView?: string) {
@@ -58,16 +96,15 @@ export async function basketView (userId, prevView?: string) {
     await Basket.sendMessage(userId, BOT);
 }
 
-export async function chooseTasteView(userId, {text, product}) {
+export async function chooseFlavorView(userId, {text, selectedSize, flavors}) {
     await User.updateAction(
         userId,
         Actions.CHOOSE_TASTE,
         {
-            product: product._id,
-            size: text
+            size: selectedSize
         }
     );
-    BOT.sendMessage(userId, 'Выберите вкус:', Keyboard.generateTaste(product.tastes));
+    BOT.sendMessage(userId, 'Выберите вкус:', Keyboard.generateFlavors(flavors));
     return;
 }
 
@@ -98,6 +135,7 @@ export async function checkout(userId) {
 }
 
 export async function payByCash(userId) {
+    const products = await Basket.getProducts(userId);
     await DB.mongo.collection('users')
         .updateOne(
             {tg_id: userId},
@@ -112,10 +150,14 @@ export async function payByCash(userId) {
         'Ваша заявка принята! В течении 24 часов мы вам сообщим ' +
         'точное время доставки вашего заказа. В случаи необходимости вы можете ' +
         'отменить ваш заказ в разделе "Мои заказы" в главное меню',
-        Keyboard.payByCash())
+        Keyboard.payByCash());
+
+    await Order.create(userId, products);
+    await Basket.clearBasket(userId);
 }
 
 export async function payByTransfer(userId) {
+    const products = await Basket.getProducts(userId);
     await DB.mongo.collection('users')
         .updateOne(
             {tg_id: userId},
@@ -129,6 +171,41 @@ export async function payByTransfer(userId) {
         userId,
         'ОК, сейчас я вам отправлю счет фактуру (это может занять пару минут). ' +
         'Как только деньги будут перечислены, я вам сообщю точное время доставки вашего заказа. ',
-        Keyboard.payByTransfer())
+        Keyboard.payByTransfer());
+
+    await PDF.sendInvoice(userId, products);
+    await Order.create(userId, products);
+    await Basket.clearBasket(userId);
 }
+
+export async function getOrders(userId) {
+    const orders = await Order.getAll(userId);
+
+    await DB.mongo.collection('users')
+        .updateOne(
+            {tg_id: userId},
+            {$set: {
+                    action: {
+                        type: Actions.ORDERS_LIST
+                    }
+                }}
+        );
+
+    if (orders.length === 0 ) {
+        return BOT.sendMessage(userId, 'У вас пока нет созданных заказов', Keyboard.orderList());
+    }
+
+    let message = 'Ваши заказы: ';
+
+    orders.map(order => {
+        message += `Дата заказа: ${moment(order.create_time).format('DD.MM.YYYY')}\n`
+        + `Сумма заказа: ${order.amount}\n`
+        + `Статус: ${getOrderStatusLocale(order.status)}`
+    });
+
+    return BOT.sendMessage(userId, message, Keyboard.orderList());
+}
+
+
+
 

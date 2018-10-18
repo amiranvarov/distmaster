@@ -24,8 +24,8 @@ export default class KeyboardBuilder {
         }
     }
 
-    static generatePositions (items) {
-        const buttons = _.chunk(items.map(item => item.name), 2);
+    static async generatePositions (names) {
+        const buttons = _.chunk(names, 2);
         buttons.push([Buttons.BACK, Buttons.BASKET]);
         return {
             "parse_mode": "Markdown",
@@ -37,8 +37,8 @@ export default class KeyboardBuilder {
         }
     }
 
-    static generateSizes (product) {
-        const buttons = _.chunk(product.sizes.map(item => item.size), 2);
+    static generateSizes (sizes: string[]) {
+        const buttons = _.chunk(sizes, 2);
         buttons.push([Buttons.BACK, Buttons.BASKET]);
         return {
             "parse_mode": "Markdown",
@@ -50,38 +50,41 @@ export default class KeyboardBuilder {
         }
     }
 
-    static generateTaste (tastes) {
+    static generateFlavors (flavors) {
         return {
             "parse_mode": "Markdown",
             "reply_markup": {
                 "one_time_keyboard": true,
                 "resize_keyboard": true,
-                "keyboard": _.chunk(tastes, 3)
+                "keyboard": _.chunk(flavors, 3)
             }
         }
     }
 
-    static generateQuantity () {
-        const sets = [
-            '100',
-            '250',
-            '300',
-            '500',
-            '1000',
-            '1500',
-            '2000',
-            '2500',
-            '3000',
-            '4000',
-            '5000',
-            '6000',
-            '7000',
-            '8000',
-            '9000',
+    static generateQuantity (userId, itemsInPack) {
+        let quantities: any = [
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90
+        ];
+
+        quantities = quantities.map( quantity => {
+            return `${quantity} (${ quantity * itemsInPack } шт)`
+        });
+
+        quantities = [
+            ...quantities,
             Buttons.BACK,
             Buttons.BASKET
         ];
-        const buttons = _.chunk(sets, 3);
+
+        const buttons = _.chunk(quantities, 3);
         return {
             "parse_mode": "Markdown",
             "reply_markup": {
@@ -115,8 +118,7 @@ export default class KeyboardBuilder {
                 "one_time_keyboard": true,
                 "resize_keyboard": true,
                 "keyboard": [
-                    ['⬅ Назад', '🔄 Очистить'],
-                    ['🚖 Оформить заказ']
+                    ['⬅ Назад'],
                 ]
             }
         }
@@ -161,4 +163,20 @@ export default class KeyboardBuilder {
             }
         }
     }
+
+    // ORDERS
+    static orderList () {
+        return {
+            parse_mode: "HTML",
+            "reply_markup": {
+                "one_time_keyboard": true,
+                "resize_keyboard": true,
+                "keyboard": [
+                    [Buttons.BACK]
+                ]
+            }
+        }
+    }
+
+
 }

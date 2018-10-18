@@ -3,6 +3,7 @@ import DB from './db'
 
 
 
+
 (async function () {
     // await DB.init();
     const messanger = new Messanger();
@@ -11,5 +12,5 @@ import DB from './db'
     // await Server.listen(config.server.host, config.server.port)
     console.log('Server started');
 
-})()
+})();
 

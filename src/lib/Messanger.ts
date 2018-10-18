@@ -123,6 +123,9 @@ export default class Messenger {
             case Actions.PAY_BY_TRANSFER:
                 await Handlers.payByChash(message, this.botWrapper);
                 break;
+            case Actions.PAY_BY_TRANSFER:
+                await Handlers.orderList(message, this.botWrapper);
+                break;
         }
     }
 
