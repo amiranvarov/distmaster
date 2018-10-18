@@ -2,6 +2,7 @@ import Keyboard, { HOME_BUTTONS } from "../lib/Keyboard";
 import DB from '../db'
 import * as Actions from '../actions-constants'
 import User from '../lib/User'
+import Position from '../Model/Position'
 import * as Navigation from '../lib/Navigation';
 import * as Buttons from '../common-buttons'
 
@@ -17,19 +18,15 @@ export async function choosePosition ({text, from}, bot) {
         return
     }
 
-    const product = await DB.mongo.collection('positions').findOne({'name': text});
-
+    const product = await Position.getOne({name: text});
     if(!product) {
-        bot.sendMessage(from.id, 'Такой позиции нету')
+        bot.sendMessage(from.id, 'Такой позиции нету');
         return
     }
 
-    if (product.sizes.length > 1 ) {
-        await Navigation.chooseSizeView(from.id, product);
-        return;
+    const sizes = await Position.getSizes({name: text});
+    if (sizes.length > 0 ) {
+        console.log('before Navigation.chooseSizeView ')
+        return await Navigation.chooseSizeView({userId: from.id, name: text});
     }
-
-    await Navigation.chooseQuantityView(from.id, {
-        product: product._id
-    });
 }

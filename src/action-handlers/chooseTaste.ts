@@ -7,10 +7,10 @@ export async function chooseTaste ({text, from}, bot) {
     const product = await User.getProduct(from.id);
     const action = await User.getAction(from.id);
 
-    if (product.tastes.indexOf(text) == -1 ) {
-        bot.sendMessage(from.id, 'Такого вкуса нету. Выберите из списка');
-        return;
-    }
+    // if (product.tastes.indexOf(text) == -1 ) {
+    //     bot.sendMessage(from.id, 'Такого вкуса нету. Выберите из списка');
+    //     return;
+    // }
 
     await User.updateAction(
         from.id,
@@ -20,6 +20,6 @@ export async function chooseTaste ({text, from}, bot) {
             taste: text
         }
     );
-    bot.sendMessage(from.id, 'Выберите или введите количество:', Keyboard.generateQuantity());
+    bot.sendMessage(from.id, 'Выберите или введите количество:', Keyboard.generateQuantity(from.id, product.pack));
 
 }

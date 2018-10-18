@@ -2,6 +2,7 @@ import Keyboard, { HOME_BUTTONS } from "../lib/Keyboard";
 import DB from '../db'
 import * as Actions from '../actions-constants'
 import User from '../lib/User'
+import Position from '../Model/Position'
 import {ObjectID} from "bson";
 import * as _ from 'lodash'
 import * as Navigation from '../lib/Navigation'
@@ -19,22 +20,20 @@ export async function chooseSize ({text, from}, bot) {
         return
     }
 
-
-    const { action } = await DB.mongo.collection('users').findOne({tg_id: from.id});
-    const product = await DB.mongo.collection('positions').findOne({_id: new ObjectID(action.payload.product)});
-
-    if(!_.find(product.sizes, {size: text}) ) {
-        bot.sendMessage(from.id, 'Такого размера нету, выберите из меню')
-        return
+    const chosenProduct = await User.getProduct(from.id);
+    const sizeExists = await Position.getOne({name: chosenProduct.name, size: text});
+    if(!sizeExists) {
+        return await bot.sendMessage(from.id, 'Такого размера нету, выберите из меню')
     }
 
-    if(product.tastes && product.tastes.length > 1) {
-        await Navigation.chooseTasteView(from.id, {text, product});
-        return;
+    const productFlavors = await Position.getFlavors({name: chosenProduct.name, size: text});
+    if(productFlavors && productFlavors.length > 1) {
+        return await Navigation.chooseFlavorView(from.id, {text, selectedSize: text, flavors: productFlavors});
     }
 
-    await Navigation.chooseQuantityView(from.id, {
-        product: product._id,
-        size: text
+    await Navigation.chooseQuantityView({
+        userId: from.id,
+        selectedSize: text,
+        productName: chosenProduct.name
     });
 }
