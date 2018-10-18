@@ -2,6 +2,7 @@ import Keyboard, { HOME_BUTTONS } from "../lib/Keyboard";
 import DB from '../db'
 import * as Actions from '../actions-constants'
 import User from '../lib/User'
+import Position from '../Model/Position'
 import Basket from '../lib/Basket'
 import * as _ from 'lodash'
 import * as Buttons from '../common-buttons'
@@ -9,19 +10,23 @@ import * as Navigation from '../lib/Navigation'
 
 export async function chooseQuantity ({text, from}, bot) {
     const product = await User.getProduct(from.id);
-    const {payload} = await User.getAction(from.id);
+    // const {payload} = await User.getAction(from.id);
 
 
     if (text === Buttons.BASKET) {
-        await Navigation.basketView(from.id, Actions.CHOOSE_QUANTITY);
-        return;
+        return await Navigation.basketView(from.id, Actions.CHOOSE_QUANTITY);
     }
 
     if (text == Buttons.BACK) {
-        console.log('back 1')
-        await Navigation.chooseSizeView(from.id, product);
-        return;
+        return await Navigation.chooseSizeView({userId: from.id});
     }
+
+    // извлекаем цифры до скобки
+    if (text.indexOf('(') !== -1) {
+        text = text.substr(0, text.indexOf('('));
+    }
+
+    text = parseInt(text);
 
 
     if(!/^\d+$/.test(text)) {
@@ -36,39 +41,45 @@ export async function chooseQuantity ({text, from}, bot) {
     }
 
     // добавить в корзину
-    const { price } = _.find(product.sizes, {size: payload.size});
     await User.addToCard(from.id,
         {
-            position_id: payload.product,
-            size: payload.size,
-            taste: payload.taste,
-            quantity,
-            price,
-            name: product.name
+            position_id: product._id,
+            quantity
         });
 
-    if (product.tastes && product.tastes.length > 1) {
-        await User.updateAction(
-            from.id,
-            Actions.CHOOSE_TASTE,
-            {
-                product: product._id
-            }
-        );
-        bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', Keyboard.generateTaste(product.tastes));
-        return;
-    }
+    // redirect на главную
+    await User.updateAction(
+        from.id,
+        Actions.CHOOSE_POSITION,
+        {
+            product: product._id
+        }
+    );
+    bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', await Keyboard.generatePositions(await Position.getNames()));
+    return;
 
-    if (product.sizes && product.sizes.length > 1) {
-        await User.updateAction(
-            from.id,
-            Actions.CHOOSE_SIZE,
-            {
-                product: product._id
-            }
-        );
-        bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', Keyboard.generateSizes(product));
-        return;
-    }
+    // if (product.taste) {
+    //     await User.updateAction(
+    //         from.id,
+    //         Actions.CHOOSE_TASTE,
+    //         {
+    //             product: product._id
+    //         }
+    //     );
+    //     bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', Keyboard.generateFlavors(product.tastes));
+    //     return;
+    // }
+    //
+    // if (product.sizes && product.sizes.length > 1) {
+    //     await User.updateAction(
+    //         from.id,
+    //         Actions.CHOOSE_SIZE,
+    //         {
+    //             product: product._id
+    //         }
+    //     );
+    //     bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', Keyboard.generateSizes(product));
+    //     return;
+    // }
 
 }
