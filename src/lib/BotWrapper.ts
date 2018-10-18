@@ -8,4 +8,8 @@ export default class TelegramBot {
     sendMessage(userId, message, messageOptions) {
         return this.bot.sendMessage(userId, message, messageOptions);
     }
+
+    sendDocument(userId, file, messageOptions = undefined) {
+        return this.bot.sendDocument(userId, file, messageOptions);
+    }
 }
