@@ -14,4 +14,8 @@ export const PAY_BY_CASH = 'PAY_BY_CASH';
 export const PAY_BY_TRANSFER = 'PAY_BY_TRANSFER';
 
 
+// ORDERS
+export const ORDERS_LIST = 'ORDERS_LIST'
+
+
 
