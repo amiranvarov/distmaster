@@ -5,6 +5,11 @@ import {ObjectID} from "bson";
 
 export default class User {
 
+    static async userExists (userId: string): Promise<boolean> {
+        const count = await DB.mongo.collection('users').count({tg_id: userId});
+        return count > 0
+    }
+
     static async updateAction (userId, action, payload = undefined) {
         const updateQuery = {
             $set: {
