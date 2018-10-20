@@ -12,7 +12,7 @@
     "concurrently": "./.bin/concurrently"
   },
   "scripts": {
-    "build": "del-cli build && tsc",
+    "build": "rm -rf build && tsc",
     "nodemon": "nodemon -w build/",
     "watch": "tsc -w",
     "dev": "concurrently --kill-others \"npm run watch\" \"npm run nodemon\" ",
