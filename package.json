@@ -7,9 +7,9 @@
     "node": "10.8.0"
   },
   "bin": {
-    "del-cli": "./bin/del-cli",
-    "nodemon": "./bin/nodemon",
-    "concurrently": "./bin/concurrently"
+    "del-cli": "./.bin/del-cli",
+    "nodemon": "./.bin/nodemon",
+    "concurrently": "./.bin/concurrently"
   },
   "scripts": {
     "build": "del-cli build && tsc",
