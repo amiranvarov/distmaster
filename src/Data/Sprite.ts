@@ -1,7 +1,7 @@
 
-export const CocaCola = [
+export const Sprite = [
     {
-        name: 'Coca Cola',
+        name: 'Sprite',
         size: '1.5 L PET',
         pack: 6,
         price: {
@@ -12,7 +12,7 @@ export const CocaCola = [
 
     },
     {
-        name: 'Coca Cola',
+        name: 'Sprite',
         size: '1.0 L PET',
         pack: 8,
         price: {
@@ -22,7 +22,7 @@ export const CocaCola = [
         }
     },
     {
-        name: 'Coca Cola',
+        name: 'Sprite',
         size: '0.5 L PET',
         pack: 12,
         price: {

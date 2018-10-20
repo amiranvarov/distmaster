@@ -9,9 +9,11 @@ import * as SeedProducts from './Data'
         "_id" : "invoiceid", "sequence_value" : 669
     });
 
-    // await DB.mongo.collection('positions').deleteMany({});
+    await DB.mongo.collection('positions').deleteMany({});
     await DB.mongo.collection('positions').insertMany([
-        ...SeedProducts.CocaCola
+        ...SeedProducts.CocaCola,
+        ...SeedProducts.Fanta,
+        ...SeedProducts.Sprite
     ])
 
     console.log('Population completed')
