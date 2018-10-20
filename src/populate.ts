@@ -13,7 +13,8 @@ import * as SeedProducts from './Data'
     await DB.mongo.collection('positions').insertMany([
         ...SeedProducts.CocaCola,
         ...SeedProducts.Fanta,
-        ...SeedProducts.Sprite
+        ...SeedProducts.Sprite,
+        ...SeedProducts.BonAqua
     ])
 
     console.log('Population completed')

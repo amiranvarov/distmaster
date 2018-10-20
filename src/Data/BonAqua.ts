@@ -1,5 +1,5 @@
 
-export const CocaCola = [
+export const BonAqua = [
     {
         name: 'Bon Aqua',
         size: '1.5 L PET',
