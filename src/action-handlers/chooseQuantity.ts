@@ -47,14 +47,20 @@ export async function chooseQuantity ({text, from}, bot) {
             quantity
         });
 
-    // redirect на главную
-    await User.updateAction(
-        from.id,
-        Actions.CHOOSE_POSITION,
-        {
-            product: product._id
-        }
-    );
+    await DB.mongo.collection('users')
+        .updateOne(
+            {tg_id: from.id},
+            {
+                $set: {
+                    action: {
+                        type:   Actions.CHOOSE_POSITION,
+                        payload: {}
+                    }
+                }
+            }
+        );
+
+
     bot.sendMessage(from.id, 'Добавлено в корзину! Что еще закажем?', await Keyboard.generatePositions(await Position.getNames()));
     return;
 }

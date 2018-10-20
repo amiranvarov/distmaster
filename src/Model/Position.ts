@@ -3,7 +3,6 @@ import DB from '../db'
 export default class  Products {
 
     static async getOne (filter = {}) {
-        console.log('getOne', filter)
         return await DB.mongo.collection('positions').findOne(filter);
     }
 

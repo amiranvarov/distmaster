@@ -17,7 +17,18 @@ export default class Basket {
             .findOne(
                 {tg_id: userId}
             );
-        return basket;
+
+        const productsInBasket = basket;
+        const productIds = productsInBasket.map(product => product.position_id);
+
+        let products = await DB.mongo.collection('positions').find({_id: {$in: productIds}}).toArray();
+        products = products.map((product, index) => {
+            const relatedProduct = productsInBasket.find(order => order.position_id.toString('hex') === product._id.toString('hex'));
+            product.quantity = relatedProduct.quantity;
+            return product
+        });
+
+        return products;
     }
 
 
@@ -32,19 +43,14 @@ export default class Basket {
         await bot.sendMessage(userId, msg, {parse_mode: 'HTML'});
     }
 
-    static async sendDetails (userId, bot) {
-        // TODO: дсотать тип аканута: key_Account or wholeaser ???
+    static getPriceForUserType (product, userId = undefined) {
         const SELLER_TYPE = SELLER_TYPES.SHOP;
+        return product.price[SELLER_TYPE];
+    }
 
-        const orders = await Basket.getProducts(userId);
-        const orderIds = orders.map(order => order.position_id);
+    static async sendDetails (userId, bot) {
 
-        let products = await DB.mongo.collection('positions').find({_id: {$in: orderIds}}).toArray();
-        products = products.map((product, index) => {
-            const relatedProduct = orders.find(order => order.position_id.toString('hex') === product._id.toString('hex'));
-            product.quantity = relatedProduct.quantity;
-            return product
-        });
+        const products = await Basket.getProducts(userId);
 
         if(!products || products.length === 0) {
             return Basket.sendEmptyBasket(userId, bot);
@@ -54,7 +60,7 @@ export default class Basket {
         let totalPrice = 0;
 
         products.map((product, index) => {
-            const price = product.price[SELLER_TYPE];
+            const price = Basket.getPriceForUserType(product);
             const { quantity, size, name, flavor, pack } = product;
             if (index === 0){
                 msg += '---------------------\n';

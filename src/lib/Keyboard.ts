@@ -9,6 +9,35 @@ export enum HOME_BUTTONS {
 
 export default class KeyboardBuilder {
 
+    // AUTH
+    static requestPhone () {
+        return {
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "one_time_keyboard": true,
+                "resize_keyboard": true,
+                "keyboard": [
+                    [
+                        {text: "Отправить мой номер телефона",
+                            request_contact: true}
+                    ],
+                ]
+            }
+        }
+    }
+
+    static requestLocation () {
+        return {
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "one_time_keyboard": true,
+                "resize_keyboard": true,
+                "keyboard": [
+                ]
+            }
+        }
+    }
+
     static homeKeyboard () {
         return {
             "parse_mode": "Markdown",

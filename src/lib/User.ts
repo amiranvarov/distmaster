@@ -5,8 +5,8 @@ import {ObjectID} from "bson";
 
 export default class User {
 
-    static async userExists (userId: string): Promise<boolean> {
-        const count = await DB.mongo.collection('users').count({tg_id: userId});
+    static async userExists (userId: number | string): Promise<boolean> {
+        const count = await DB.mongo.collection('users').count({tg_id: userId, phone: {$exists: true}});
         return count > 0
     }
 

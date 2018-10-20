@@ -8,6 +8,8 @@ import HandlerRouter from "../command"
 import AuthCommandCtrl from '../command/Auth'
 import * as Actions from '../actions-constants'
 import * as Handlers from '../action-handlers'
+import * as Navigation from './Navigation'
+import User from '../lib/User'
 
 export let BOT = undefined;
 export function getBot() {
@@ -36,7 +38,7 @@ interface TelegramLocation {
     longitude: number
 }
 
-interface TelegramMessage {
+export interface TelegramMessage {
     message_id: number;
     from: TelegramUser;
     date: number;
@@ -78,24 +80,30 @@ export default class Messenger {
 
     async handleInput(message: TelegramMessage) {
         const { text, from } = message;
+        const userId = from.id
+
+
+        const user = await DB.mongo.collection('users').findOne({tg_id: from.id});
 
         if (text === '/start') {
-            await DB.mongo.collection('users')
-                .updateOne(
-                {tg_id: from.id},
-                {$set: {
-                        action: {
-                            type: Actions.START
-                        }
-                    }}
-                );
-            this.botWrapper.sendMessage(from.id, 'Привет я бот службы доставки! Закажем вам чего то?', Keyboard.homeKeyboard())
-            return;
+            if(!user) {
+                return await Navigation.requestPhone(userId);
+            }
+
+            if(user.action.type !==  Actions.REQUEST_PHONE
+                && user.action.type !==  Actions.REQUEST_LOCATION ) {
+                return await Navigation.homeView(userId);
+            }
         }
 
-        const { action } = await DB.mongo.collection('users').findOne({tg_id: from.id});
 
-        switch (action.type) {
+        switch (user.action.type) {
+            case Actions.REQUEST_PHONE:
+                await Handlers.requestPhone(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_LOCATION:
+                await Handlers.requestLocation(message, this.botWrapper);
+                break;
             case Actions.START:
                 await Handlers.start(message, this.botWrapper);
                 break;
@@ -123,7 +131,7 @@ export default class Messenger {
             case Actions.PAY_BY_TRANSFER:
                 await Handlers.payByChash(message, this.botWrapper);
                 break;
-            case Actions.PAY_BY_TRANSFER:
+            case Actions.ORDERS_LIST:
                 await Handlers.orderList(message, this.botWrapper);
                 break;
         }

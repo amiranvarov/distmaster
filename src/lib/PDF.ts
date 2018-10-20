@@ -42,18 +42,23 @@ function generateHTML (products, {invoiceId, date}) {
         '</thead>' +
         '<tbody class="table-body">';
 
+
             products.map((product, index) => {
-                totalAmount += (product.price * product.quantity);
+                let {name, quantity, price, pack, size, flavor} = product;
+                price = Basket.getPriceForUserType(product);
+                const title = `${name} ${size || ''} ${flavor || ''}`;
+                const amount = (price * pack * quantity);
+                totalAmount = totalAmount + amount;
+
 
                 HTML +='<tr>' +
                     `   <td>${index + 1}</td>` +
-                    `   <td>${product.name} </td>` +
-                    `   <td>${product.quantity.toLocaleString()}</td>` +
-                    `   <td>${product.price.toLocaleString()}</td>` +
-                    `   <td>${(product.price * product.quantity).toLocaleString()}</td>` +
+                    `   <td>${title} </td>` +
+                    `   <td>${quantity.toLocaleString()}</td>` +
+                    `   <td>${price.toLocaleString()}</td>` +
+                    `   <td>${amount.toLocaleString()}</td>` +
                     '</tr>'
             });
-
         HTML += '</tbody>' +
         '<tfooter>' +
         '<tr>' +

@@ -26,7 +26,6 @@ export async function choosePosition ({text, from}, bot) {
 
     const sizes = await Position.getSizes({name: text});
     if (sizes.length > 0 ) {
-        console.log('before Navigation.chooseSizeView ')
         return await Navigation.chooseSizeView({userId: from.id, name: text});
     }
 }

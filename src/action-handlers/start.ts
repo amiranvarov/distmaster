@@ -8,7 +8,7 @@ export async function start ({text, from}, bot) {
     const userId = from.id;
     switch (text) {
         case HOME_BUTTONS.CREATE_ORDER:
-            await Navigation.choosePositionsView(userId);
+            await Navigation.choosePositionsView({userId});
             break;
 
         case HOME_BUTTONS.CHECK_ORDER_STATUS:
