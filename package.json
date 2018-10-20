@@ -20,16 +20,18 @@
     "populate": "npm run build && node ./build/populate "
   },
   "dependencies": {
+    "@types/express": "^4.16.0",
+    "@types/mongodb": "^3.1.10",
+    "@types/node": "^10.11.4",
+    "del-cli": "^1.1.0",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "mongodb": "^3.1.6",
     "node-telegram-bot-api": "^0.30.0",
     "phantom-html-to-pdf": "^0.5.6",
     "phantomjs-prebuilt": "^2.1.16",
-    "del-cli": "^1.1.0",
-    "typescript": "^3.1.1",
-    "@types/mongodb": "^3.1.10",
-    "@types/node": "^10.11.4"
+    "typescript": "^3.1.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
