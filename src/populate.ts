@@ -5,7 +5,7 @@ import * as SeedProducts from './Data'
 
     await DB.init();
 
-    await DB.mongo.collection('positions').deleteMany({});
+    // await DB.mongo.collection('positions').deleteMany({});
     await DB.mongo.collection('positions').insertMany([
         ...SeedProducts.CocaCola,
         ...SeedProducts.Bliss
