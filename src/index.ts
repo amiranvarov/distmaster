@@ -10,7 +10,7 @@ import DB from './db'
     await messanger.listen();
     await DB.init()
     // await Server.listen(config.server.host, config.server.port)
-    console.log('Server started!');
+    console.log('Server started!!');
 
 })();
 
