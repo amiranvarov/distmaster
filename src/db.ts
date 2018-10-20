@@ -5,6 +5,8 @@ export default class DB {
     static mongo;
 
     static async init () {
+        console.log('DB_URI', process.env.MONGODB_URI);
+        console.log('EV',process.env)
         const client = await MongoClient.connect(process.env.MONGODB_URI);
         DB.mongo = client.db('heroku_kjq2dwjn');
         console.log('MongoDB connected')

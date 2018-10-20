@@ -6,9 +6,10 @@ import * as express from 'express'
 
 (async function () {
 
+    const PORT = process.env.PORT || 3000;
     express()
         .get('/test', (req, res) => res.send('hello world'))
-        .listen(process.env.PORT, () => console.log(`Listening on ${ process.env.PORT }`));
+        .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
     // await DB.init();
     const messanger = new Messanger();
