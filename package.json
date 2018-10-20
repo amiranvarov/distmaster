@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "./build/",
   "license": "MIT",
+  "engines": {
+    "node": "10.8.0"
+  },
   "bin": {
     "del-cli": "./bin/del-cli",
     "nodemon": "./bin/nodemon",
@@ -12,7 +15,8 @@
     "build": "del-cli build && tsc",
     "nodemon": "nodemon -w build/",
     "watch": "tsc -w",
-    "start": "concurrently --kill-others \"npm run watch\" \"npm run nodemon\" ",
+    "dev": "concurrently --kill-others \"npm run watch\" \"npm run nodemon\" ",
+    "start": "npm run build && node ./build/index.js ",
     "populate": "npm run build && node ./build/populate "
   },
   "dependencies": {
