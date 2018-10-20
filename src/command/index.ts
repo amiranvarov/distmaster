@@ -1,5 +1,5 @@
 // import FixRequest from './fixRequest';
-import Help from './help';
+import Help from './Help';
 import Start from './Start';
 import Register from './Auth';
 
