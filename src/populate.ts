@@ -5,9 +5,9 @@ import * as SeedProducts from './Data'
 
     await DB.init();
     // sequence
-    await DB.mongo.collection('counters').insertOne({
-        "_id" : "invoiceid", "sequence_value" : 669
-    });
+    // await DB.mongo.collection('counters').insertOne({
+    //     "_id" : "invoiceid", "sequence_value" : 669
+    // });
 
     await DB.mongo.collection('positions').deleteMany({});
     await DB.mongo.collection('positions').insertMany([
