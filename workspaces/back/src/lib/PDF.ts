@@ -1,6 +1,6 @@
 import * as phantom from 'phantom-html-to-pdf'
-import { BOT } from '../lib/Messanger'
-import Basket from '../lib/Basket'
+import { BOT } from './Messanger'
+import Basket from './Basket'
 import DB from '../db'
 import * as moment from 'moment'
 

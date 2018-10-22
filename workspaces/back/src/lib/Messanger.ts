@@ -4,12 +4,12 @@ import {ObjectID} from 'mongodb'
 import Keyboard from './Keyboard'
 // import Message from './Message'
 import BotWrapper from './BotWrapper'
-import HandlerRouter from "../command"
+import HandlerRouter from "../command/index"
 import AuthCommandCtrl from '../command/Auth'
 import * as Actions from '../actions-constants'
-import * as Handlers from '../action-handlers'
+import * as Handlers from '../action-handlers/index'
 import * as Navigation from './Navigation'
-import User from '../lib/User'
+import User from './User'
 
 export let BOT = undefined;
 export function getBot() {

@@ -1,5 +1,5 @@
 import DB from './db'
-import * as SeedProducts from './Data'
+import * as SeedProducts from './Data/index'
 
 (async function () {
 

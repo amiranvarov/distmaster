@@ -1,7 +1,7 @@
 import DB from '../db'
 import * as Actions from "../actions-constants";
 import {ObjectID} from "mongodb";
-import Keyboard from '../lib/Keyboard'
+import Keyboard from './Keyboard'
 
 enum SELLER_TYPES  {
     KEY_ACCOUNT = 'key_Account',

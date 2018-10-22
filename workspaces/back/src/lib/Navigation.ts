@@ -3,12 +3,12 @@ import * as Actions from '../actions-constants'
 import User from "./User";
 import Position from '../Model/Position'
 import Keyboard from "./Keyboard";
-import { BOT } from '../lib/Messanger'
+import { BOT } from './Messanger'
 import Basket from "./Basket";
 import Order from './Order';
-import * as PDF from '../lib/PDF'
+import * as PDF from './PDF'
 import * as moment from 'moment';
-import  { getOrderStatusLocale, getPaymentTypeLocale } from '../lib/locale'
+import  { getOrderStatusLocale, getPaymentTypeLocale } from './locale'
 
 
 export async function generateFromAction (action, userId: string) {

@@ -1,4 +1,4 @@
-import { ORDER_STATUS, PAYMENT_TYPE } from '../lib/Order'
+import { ORDER_STATUS, PAYMENT_TYPE } from './Order'
 
 export function getOrderStatusLocale (orderStatus) {
     switch (orderStatus) {
