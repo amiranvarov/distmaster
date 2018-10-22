@@ -16,7 +16,10 @@ export function getBot() {
     return BOT;
 }
 
-const TELEGRAM_TOKEN = '651163097:AAG5lmkRUX84LLn1NeuI7qLXVF71DP93wmo';
+enum TelegramToken {
+    DEV = '794194362:AAEtS2EIl0okzGpvulrMDTtPoBrN4EDhe2g',
+    PRODUCTION = '651163097:AAG5lmkRUX84LLn1NeuI7qLXVF71DP93wmo'
+}
 
 interface TelegramUser {
     id: number;
@@ -60,7 +63,7 @@ export default class Messenger {
         //     this.bot = new TelegramBot(TELEGRAM_TOKEN, { webHook: { port: config.telegram.port, host: config.telegram.host } });
         //     this.bot.setWebHook(config.telegram.externalUrl + ':443/bot' + config.telegram.token);
         // } else {
-            this.bot = new TelegramBot(TELEGRAM_TOKEN, { polling: {timeout: 10, interval: 100} });
+            this.bot = new TelegramBot(TelegramToken.DEV, { polling: {timeout: 10, interval: 100} });
         // }
         this.botWrapper = new BotWrapper(this.bot);
     }
@@ -82,7 +85,6 @@ export default class Messenger {
         const { text, from } = message;
         const userId = from.id
 
-
         const user = await DB.mongo.collection('users').findOne({tg_id: from.id});
 
         if (text === '/start') {
@@ -100,6 +102,18 @@ export default class Messenger {
         switch (user.action.type) {
             case Actions.REQUEST_PHONE:
                 await Handlers.requestPhone(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_SHOP_NAME:
+                await Handlers.requestShopname(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_LEGAL_NAME:
+                await Handlers.requestLegalName(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_REGION:
+                await Handlers.requestRegion(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_LOCATION_TEXT:
+                await Handlers.requestLocationText(message, this.botWrapper);
                 break;
             case Actions.REQUEST_LOCATION:
                 await Handlers.requestLocation(message, this.botWrapper);

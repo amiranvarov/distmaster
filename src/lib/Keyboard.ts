@@ -9,6 +9,30 @@ export enum HOME_BUTTONS {
 
 export default class KeyboardBuilder {
 
+    static regions (regions: string[]) {
+        const buttons = _.chunk(regions, 2);
+        return {
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "one_time_keyboard": true,
+                "resize_keyboard": true,
+                "keyboard": buttons
+            }
+        }
+    }
+
+    static empty() {
+        return {
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "one_time_keyboard": true,
+                "resize_keyboard": true,
+                "keyboard": [
+                ]
+            }
+        }
+    }
+
     // AUTH
     static requestPhone () {
         return {
@@ -33,6 +57,10 @@ export default class KeyboardBuilder {
                 "one_time_keyboard": true,
                 "resize_keyboard": true,
                 "keyboard": [
+                    [{
+                        text: "Отправить моё текущее местоположение",
+                        request_location: true
+                    }]
                 ]
             }
         }

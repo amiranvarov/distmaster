@@ -12,7 +12,7 @@ export async function requestLocation (message: TelegramMessage, bot: any) {
         .updateOne(
             {tg_id: message.from.id},
             {$set: {
-                        location: {
+                        'shop.location': {
                             type: 'Point',
                             coordinates: [
                                 message.location.longitude,
@@ -24,5 +24,5 @@ export async function requestLocation (message: TelegramMessage, bot: any) {
                         }
                 }}
         );
-    bot.sendMessage(message.from.id, 'Замечательно, теперь вы можете сделать свой первый заказ а так же смотреть статусы заказов', Keyboard.homeKeyboard())
+    bot.sendMessage(message.from.id, 'Отлично!\n Вы зарегистрировались в нашей системе)\n\nТеперь вы можете сделать свой первый заказ, а так же смотреть статусы заказов', Keyboard.homeKeyboard())
 }

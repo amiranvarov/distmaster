@@ -24,9 +24,9 @@ export async function requestPhone (message: TelegramMessage, bot: any) {
                     name: `${first_name} ${last_name}`,
                     phone: phone_number,
                     action: {
-                        type: Actions.REQUEST_LOCATION
+                        type: Actions.REQUEST_SHOP_NAME
                     }
                 }}
             );
-    await bot.sendMessage(message.from.id, 'Отлично! А теперь отправьте местолопожение вашего магазина', Keyboard.requestLocation());
+    await bot.sendMessage(message.from.id, 'Отлично! А теперь введите название вашего магазина', Keyboard.empty());
 }

@@ -5,10 +5,8 @@ export default class DB {
     static mongo;
 
     static async init () {
-        console.log('DB_URI', process.env.MONGODB_URI);
-        console.log('EV',process.env)
-        const client = await MongoClient.connect(process.env.MONGODB_URI);
-        DB.mongo = client.db('heroku_kjq2dwjn');
+        const client = await MongoClient.connect('mongodb://localhost:27017/dist-bot'); //process.env.MONGODB_URI
+        DB.mongo = client.db('dist-bot');
         console.log('MongoDB connected')
     }
 
@@ -23,7 +21,6 @@ export default class DB {
             return;
         }
         const id = sequenceDocument.value.sequence_value;
-        console.log('ID!!!', id);
         return id;
     }
 }
