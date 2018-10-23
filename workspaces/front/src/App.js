@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import RootContainer from './RootContainer'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>hello wolrd</h1>
+        <RootContainer/>
       </div>
     );
   }
