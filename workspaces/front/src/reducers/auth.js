@@ -1,7 +1,7 @@
 import {
-    LOGIN_REQUST,
-    LOGIN_FAIL,
-    LOGIN_SUCCESS
+  LOGIN_REQUST,
+  LOGIN_FAIL,
+  LOGIN_SUCCESS, LOG_OUT
 } from '../actions/auth'
 
 const initialState = {
@@ -10,24 +10,32 @@ const initialState = {
     loggedIn: false,
 };
 
-export default (state = {}, action) => {
+export default (state = initialState, action) => {
+
+    console.log('Auth action', action)
     switch (action.type) {
         case LOGIN_REQUST:
             return {
-                ...initialState,
+                ...state,
             };
         case LOGIN_FAIL:
             return {
-                ...initialState,
+                ...state,
                 error: action.payload
             };
         case LOGIN_SUCCESS:
             return {
-                ...initialState,
+                ...state,
                 loggedIn: true,
                 user: action.payload
             };
-        default:
-            return initialState
+
+      case LOG_OUT:
+        return {
+          ...state,
+          loggedIn: false,
+        };
+      default:
+            return state
     }
 }

@@ -5,6 +5,14 @@ import {ObjectID} from "bson";
 
 export default class User {
 
+    static async findOne  (filter = {}) {
+        return  await DB.mongo.collection('users')
+            .findOne(filter,
+                {
+                    fields:
+                        {name: 1, phone: 1, shop: 1, tg_id: 1}});
+    }
+
     static async userExists (userId: number | string): Promise<boolean> {
         const count = await DB.mongo.collection('users').count({tg_id: userId, phone: {$exists: true}});
         return count > 0

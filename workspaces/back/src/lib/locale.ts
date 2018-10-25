@@ -5,8 +5,10 @@ export function getOrderStatusLocale (orderStatus) {
         case ORDER_STATUS.REVIEW:
             return 'Рассматриватся';
 
-        case ORDER_STATUS.SENT:
+        case ORDER_STATUS.APPROVE:
             return 'Заказ принят';
+        case ORDER_STATUS.REJECT:
+            return 'Заказ отклонен';
     }
 }
 

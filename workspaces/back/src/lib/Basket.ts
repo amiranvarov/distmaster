@@ -2,9 +2,10 @@ import DB from '../db'
 import * as Actions from "../actions-constants";
 import {ObjectID} from "mongodb";
 import Keyboard from './Keyboard'
+import {renderProductsList} from '../helpers'
 
 enum SELLER_TYPES  {
-    KEY_ACCOUNT = 'key_Account',
+    KEY_ACCOUNT = 'key_account',
     WHOLESALER = 'wholesaler',
     SHOP = 'shop'
 }
@@ -59,20 +60,7 @@ export default class Basket {
         let msg = '<b>Корзина:</b> \n\n';
         let totalPrice = 0;
 
-        products.map((product, index) => {
-            const price = Basket.getPriceForUserType(product);
-            const { quantity, size, name, flavor, pack } = product;
-            if (index === 0){
-                msg += '---------------------\n';
-            }
-            msg += `<b>№${index + 1} ${name}</b> ${size} ${flavor || ''} \n`;
-            msg += `${quantity.toLocaleString()} * ${pack} * ${price.toLocaleString()} = ${ (quantity * pack *  price).toLocaleString()}\n`;
-            totalPrice += (quantity * pack *  price);
-
-            msg += '---------------------\n';
-        });
-
-        msg += `\n<b>Итого</b>: ${totalPrice.toLocaleString()}`;
+        msg += renderProductsList(products, 'shop');
 
         bot.sendMessage(userId, msg, await Keyboard.generateBasket(products))
     }

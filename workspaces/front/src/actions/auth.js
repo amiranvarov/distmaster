@@ -8,11 +8,10 @@ export const LOG_OUT = 'LOG_OUT';
 
 
 export  const login = (credentials) => async (dispatch) => {
-
     try {
         dispatch({
             type: LOGIN_REQUST,
-        })
+        });
         await axios.post('/auth', credentials);
         dispatch({
             type: LOGIN_SUCCESS,
@@ -21,13 +20,11 @@ export  const login = (credentials) => async (dispatch) => {
             }
         })
     } catch (error) {
-        console.log('error', error)
         dispatch({
             type: LOGIN_FAIL,
             payload: error.response.data.error
         })
     }
-
 };
 
 export const logOut = () => async (dispatch) => {

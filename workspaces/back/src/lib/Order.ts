@@ -1,6 +1,8 @@
 import DB from '../db'
 import * as moment from 'moment';
 import Basket from './Basket'
+import User from './User'
+import {ObjectID} from "bson";
 
 
 interface IOrder {
@@ -12,7 +14,8 @@ interface IOrder {
 }
 export enum ORDER_STATUS {
     REVIEW = 'review',
-    SENT = 'sent'
+    APPROVE = 'approve',
+    REJECT = 'reject'
 }
 export enum PAYMENT_TYPE {
     CASH = 'cash',
@@ -22,12 +25,13 @@ export enum PAYMENT_TYPE {
 interface IOrderCreate {
     userId: string,
     products: any;
-    paymentMethod: string
+    paymentMethod: string,
+    invoiceId?: string
 }
 
 export default class Order {
 
-    static async create ({userId, products, paymentMethod}: IOrderCreate) {
+    static async create ({userId, products, paymentMethod, invoiceId}: IOrderCreate) {
         products = products.map(product => {
             return {
                 position_id: product._id,
@@ -35,24 +39,34 @@ export default class Order {
             }
         });
 
-        const order = {
+        const order :any = {
             status: ORDER_STATUS.REVIEW,
-            crate_time: moment().unix(),
+            create_time: moment().unix(),
             products,
             user_id: userId,
             payment_type: paymentMethod,
         };
 
+        if(invoiceId) {
+            order.invoice_id = invoiceId
+        }
+
         await DB.mongo.collection('orders').insertOne(order);
     }
 
-    static async getAll (userId) {
-        const orders = await DB.mongo.collection('orders').find({user_id: userId}).toArray();
+    static async getAll (filter = {}) {
+        const orders = await DB.mongo.collection('orders').find(filter).sort({create_time: -1}).toArray();
 
-        return await Promise.all(orders.map(async order => await Order.getOrder(order)));
+        return await Promise.all(orders.map(async order => await Order.populateOrder(order)));
     }
 
-    static async getOrder (order) {
+    static async getOne (orderId: string) {
+        const order = await DB.mongo.collection('orders').findOne({_id: new ObjectID(orderId)});
+        return await Order.populateOrder(order)
+    }
+
+    static async populateOrder (order) {
+
         const productsInOrder = order.products;
 
         const productIds = productsInOrder.map(product => product.position_id);
@@ -64,6 +78,9 @@ export default class Order {
             productFromDB.quantity = matchedProduct.quantity;
             return productFromDB
         });
+
+        // вытаскивам данные пользвателя
+        order.user = await User.findOne({tg_id: order.user_id});
 
         order.products = productsFromDB;
         return order;

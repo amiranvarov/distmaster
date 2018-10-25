@@ -189,6 +189,8 @@ export async function payByCash(userId) {
 }
 
 export async function payByTransfer(userId) {
+    const invoiceId = await DB.getNextSequenceValue('invoiceid');
+
     const products = await Basket.getProducts(userId);
     await DB.mongo.collection('users')
         .updateOne(
@@ -196,7 +198,7 @@ export async function payByTransfer(userId) {
             {$set: {
                     action: {
                         type: Actions.PAY_BY_TRANSFER
-                    }
+                    },
                 }}
         );
     BOT.sendMessage(
@@ -205,13 +207,13 @@ export async function payByTransfer(userId) {
         'Как только деньги будут перечислены, я вам сообщю точное время доставки вашего заказа. ',
         Keyboard.payByTransfer());
 
-    await PDF.sendInvoice(userId, products);
-    await Order.create({userId, products, paymentMethod: 'transfer'});
+    await PDF.sendInvoice(userId, products, invoiceId);
+    await Order.create({userId, products, paymentMethod: 'transfer', invoiceId});
     await Basket.clearBasket(userId);
 }
 
 export async function getOrders(userId) {
-    const orders = await Order.getAll(userId);
+    const orders = await Order.getAll({user_id: userId});
 
     await DB.mongo.collection('users')
         .updateOne(
@@ -240,8 +242,15 @@ export async function getOrders(userId) {
         }
         message += `Дата заказа: ${moment(order.create_time).format('DD.MM.YYYY')}\n`
         + `Сумма заказа: ${amount.toLocaleString()}\n`
-        + `Статус: ${getOrderStatusLocale(order.status)}\n`
-        + `Форма оплаты: ${getPaymentTypeLocale(order.payment_type)}\n`
+        + `Статус: ${getOrderStatusLocale(order.status)}\n`;
+
+        if(order.status === 'approve') {
+            message += `Дата достави: ${order.delivery_date}\n`
+        } else if (order.status === 'reject') {
+            message += `Причина отказа: ${order.reject_reason}\n`
+        }
+
+        message += `Форма оплаты: ${getPaymentTypeLocale(order.payment_type)}\n`
         + `--------------\n`;
     });
 

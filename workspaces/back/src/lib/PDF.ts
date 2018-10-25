@@ -77,12 +77,10 @@ function generateHTML (products, {invoiceId, date}) {
     return HTML
 }
 
-async function generateInvoiceId () {
-    return await DB.getNextSequenceValue('invoiceid');
-}
 
-export async function sendInvoice(userId: string, products) {
-    const invoiceId = await generateInvoiceId();
+
+export async function sendInvoice(userId: string, products, invoiceId) {
+
     const date = moment().format('DD.MM.YYYY');
 
     const html = generateHTML(products, {invoiceId, date});

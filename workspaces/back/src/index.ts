@@ -16,6 +16,9 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
         .use(express.static(REACT_BUNDLE_LOCATION))
         .get('/test', (req, res) => res.send('hello world'))
         .post('/auth', Handlers.login)
+        .get('/orders', Handlers.fetchList)
+
+        .post('/orders/:orderId/approve', Handlers.approve)
         .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
     const messenger = new Messanger();
