@@ -6,7 +6,7 @@ import * as Handlers from './Server/controllers'
 import * as bodyParser from 'body-parser'
 
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4001;
 const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
 
 (async function () {
@@ -19,6 +19,7 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
         .get('/orders', Handlers.fetchList)
 
         .post('/orders/:orderId/approve', Handlers.approve)
+        .post('/orders/:orderId/reject', Handlers.reject)
         .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
     const messenger = new Messanger();
