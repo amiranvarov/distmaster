@@ -9,10 +9,10 @@
       "workspaces/*"
     ]
   },
-  "dependencies": {
-    "wsrun": "^3.3.3"
-  },
   "scripts": {
-    "start": "wsrun build"
+    "heroku-postbuild": "yarn build",
+    "build": "concurrently \"cd workspaces/front && yarn build\" \"cd workspaces/back && yarn build\"",
+    "install": "(cd workspaces/front && yarn) && (cd workspaces/back && yarn)",
+    "start:prod": "cd workspaces/back && yarn start:prod"
   }
 }

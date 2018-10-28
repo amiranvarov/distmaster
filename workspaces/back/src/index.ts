@@ -14,6 +14,8 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
 
 (async function () {
 
+    console.log('REACT_BUNDLE_LOCATION', REACT_BUNDLE_LOCATION);
+
     express()
         .use(bodyParser.json())
         .use(express.static(REACT_BUNDLE_LOCATION))

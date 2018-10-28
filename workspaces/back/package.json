@@ -12,12 +12,13 @@
     "concurrently": "./.bin/concurrently"
   },
   "scripts": {
-    "build": "rm -rf build && tsc",
     "nodemon": "nodemon -w ./build/",
     "watch": "tsc -w",
     "dev": "concurrently --kill-others \"npm run watch\" \"npm run nodemon\" ",
     "start": "npm run build && node ./build/index.js ",
-    "populate": "npm run build && node ./build/populate "
+    "populate": "npm run build && node ./build/populate ",
+    "build": "rm -rf build && tsc",
+    "start:prod": "node ./build/index.js"
   },
   "dependencies": {
     "@types/express": "^4.16.0",
