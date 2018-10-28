@@ -8,5 +8,11 @@
     "packages": [
       "workspaces/*"
     ]
+  },
+  "dependencies": {
+    "wsrun": "^3.3.3"
+  },
+  "scripts": {
+    "start": "wsrun build"
   }
 }
