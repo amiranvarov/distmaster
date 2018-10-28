@@ -262,7 +262,7 @@ export async function getOrders(userId) {
         if(index === 0) {
             message += '--------------\n'
         }
-        message += `Дата заказа: ${moment(order.create_time).format('DD.MM.YYYY')}\n`
+        message += `Дата заказа: ${moment.unix(order.create_time).format('DD.MM.YYYY')}\n`
         + `Сумма заказа: ${amount.toLocaleString()}\n`
         + `Статус: ${getOrderStatusLocale(order.status)}\n`;
 
