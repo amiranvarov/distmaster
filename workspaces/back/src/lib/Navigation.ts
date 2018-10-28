@@ -228,7 +228,7 @@ export async function payByTransfer(userId) {
         Keyboard.payByTransfer());
 
     const {phone, shop} = (await DB.mongo.collection('users').findOne({tg_id: userId}));
-    PDF.sendSpecification({userId, products, order, contract});
+    // PDF.sendSpecification({userId, products, order, contract});
     PDF.sendInvoice({userId, products, order, contract, phone, shop });
     await Order.create({userId, products, paymentMethod: 'transfer', orderNumber: order.number});
     await Basket.clearBasket(userId);

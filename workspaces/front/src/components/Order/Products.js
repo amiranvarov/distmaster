@@ -27,7 +27,7 @@ export const Products = ({products}) => (
           <td>{generateProductName(product)}</td>
           <td>({product.pack})</td>
           <td>{product.quantity}</td>
-          <td>{product.price['shop'].toLocaleString()}</td>
+          <td>{(product.pack * product.price['shop']).toLocaleString()}</td>
           <td>{getProductRowCost(product, 'shop').toLocaleString()}</td>
         </tr>
       ))

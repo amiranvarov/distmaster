@@ -183,7 +183,7 @@ export const getHTML = ({order, contract, products, shop, phone}) => {
                 <td>${product.name} ${product.flavor ? product.flavor : ''} ${product.size} (${product.pack} бут)</td>
                 <td>блок</td>
                 <td class="text-right">${product.quantity}</td>
-                <td class="text-right">${product.price.shop.toLocaleString()}</td>
+                <td class="text-right">${(product.pack * product.price.shop).toLocaleString()}</td>
                 <td class="text-right">${getProductRowCost(product).toLocaleString()}</td>
               </tr>`
     })
