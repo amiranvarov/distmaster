@@ -16,7 +16,7 @@ export async function chooseSize ({text, from}, bot) {
     }
 
     if(text === Buttons.BACK) {
-        await Navigation.choosePositionsView(from.id);
+        await Navigation.choosePositionsView({userId: from.id});
         return
     }
 

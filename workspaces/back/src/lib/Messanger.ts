@@ -10,7 +10,6 @@ import * as Actions from '../actions-constants'
 import * as Handlers from '../action-handlers/index'
 import * as Navigation from './Navigation'
 import User from './User'
-import { sendTestPDF} from './PDF'
 
 export let BOT = undefined;
 export function getBot() {

@@ -31,14 +31,15 @@ export const Sprite = [
             shop: 2500,
         }
     },
-    // {
-    //     name: 'Coca Cola',
-    //     size: '0.25 ml GLASS',
-    //     pack: 24,
-    //     price: {
-    //         key_account: 3000,
-    //         wholesaler: 3200,
-    //         shop: 3400,
-    //     }
-    // }
+    {
+      name: 'Sprite',
+      size: '0.25 L GLASS',
+      pack: 24,
+      price: {
+          key_account: 1030,
+          wholesaler: 1030,
+          shop: 1030,
+      }
+    }
+
 ];

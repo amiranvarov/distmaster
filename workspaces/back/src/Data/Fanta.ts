@@ -1,7 +1,7 @@
 
 export const Fanta = [
     {
-        name: 'Fanta',
+        name: 'Fanta Apelsin',
         size: '1.5 L PET',
         pack: 6,
         price: {
@@ -12,7 +12,7 @@ export const Fanta = [
 
     },
     {
-        name: 'Fanta',
+        name: 'Fanta Apelsin',
         size: '1.0 L PET',
         pack: 8,
         price: {
@@ -22,7 +22,7 @@ export const Fanta = [
         }
     },
     {
-        name: 'Fanta',
+        name: 'Fanta Apelsin',
         size: '0.5 L PET',
         pack: 12,
         price: {
@@ -31,14 +31,14 @@ export const Fanta = [
             shop: 2500,
         }
     },
-    // {
-    //     name: 'Coca Cola',
-    //     size: '0.25 ml GLASS',
-    //     pack: 24,
-    //     price: {
-    //         key_account: 3000,
-    //         wholesaler: 3200,
-    //         shop: 3400,
-    //     }
-    // }
+    {
+        name: 'Fanta Apelsin',
+        size: '0.25 L GLASS',
+        pack: 24,
+        price: {
+            key_account: 1030,
+            wholesaler: 1030,
+            shop: 1030,
+        }
+    }
 ];

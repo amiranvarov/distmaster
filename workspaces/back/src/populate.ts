@@ -14,7 +14,8 @@ import * as SeedProducts from './Data/index'
         ...SeedProducts.CocaCola,
         ...SeedProducts.Fanta,
         ...SeedProducts.Sprite,
-        ...SeedProducts.BonAqua
+        ...SeedProducts.BonAqua,
+        ...SeedProducts.FuseTea
     ])
 
     console.log('Population completed')
