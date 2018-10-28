@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "main": "./build/",
   "license": "MIT",
-  "engines": {
-    "node": "10.8.0"
-  },
   "bin": {
     "del-cli": "./.bin/del-cli",
     "nodemon": "./.bin/nodemon",

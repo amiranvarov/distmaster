@@ -4,6 +4,9 @@
   "name": "distmaster",
   "version": "0.1.0",
   "description": "DIST BOT app",
+  "engines": {
+    "node": "10.8.0"
+  },
   "workspaces": {
     "packages": [
       "workspaces/*"
