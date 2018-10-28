@@ -6,7 +6,9 @@ export default class DB {
 
     static async init () {
         const client = await MongoClient.connect(process.env.MONGODB_URI); //process.env.MONGODB_URI
-        DB.mongo = client.db('dist-bot');
+        const parts = process.env.MONGODB_URI.split('/')
+        const dbName = parts[parts.length - 1]
+        DB.mongo = client.db(dbName);
         console.log('MongoDB connected')
     }
 
