@@ -231,7 +231,7 @@ export async function payByTransfer(userId) {
     PDF.sendSpecification({userId, products, order, contract});
     PDF.sendInvoice({userId, products, order, contract, phone, shop });
     await Order.create({userId, products, paymentMethod: 'transfer', orderNumber: order.number});
-    // await Basket.clearBasket(userId);
+    await Basket.clearBasket(userId);
 }
 
 export async function getOrders(userId) {
