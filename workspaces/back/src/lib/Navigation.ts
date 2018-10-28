@@ -203,7 +203,7 @@ export async function payByTransfer(userId) {
     const orderDate = moment();
     const nextOrderNumber = await DB.getNextSequenceValue('invoiceid');
     const order = {
-        number: `${contract.number}/${nextOrderNumber}`,
+        number: `${nextOrderNumber}/${contract.number}`,
         date: {
             day: orderDate.format('DD'),
             month: orderDate.format('MMMM'),
