@@ -15,6 +15,7 @@ const Dashboard = () => (
                 <Menu />
             </Col>
             <Col>
+              <Route path="/" exact={true} component={OrderList} />
               <Route path="/orders" component={OrderList} />
               <Route path="/clients" component={CustomerList} />
               <Route path="/products" component={ProductList} />

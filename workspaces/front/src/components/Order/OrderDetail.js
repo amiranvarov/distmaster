@@ -66,6 +66,18 @@ class OrderDetail extends React.Component {
                     <small><strong>Статус:</strong></small> {" "}
                     <OrderStatus status={order.status} />
                   </div>
+                  {order.status == 'approve' && (
+                    <div>
+                      <small><strong>Дата доставки:</strong></small> {" "}
+                      {order.delivery_date}
+                    </div>
+                  )}
+                  {order.status == 'reject' && (
+                    <div>
+                      <small><strong>Причина отказа:</strong></small> {" "}
+                      {order.reason}
+                    </div>
+                  )}
                   <hr />
                   {order.status == 'review' && <ApproveForm />}
                 </CardBody>
