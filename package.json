@@ -17,5 +17,8 @@
     "build": "concurrently \"cd workspaces/front && yarn build\" \"cd workspaces/back && yarn build\"",
     "install": "(cd workspaces/front && yarn) && (cd workspaces/back && yarn)",
     "start:prod": "cd workspaces/back && yarn start:prod"
+  },
+  "dependencies": {
+    "concurrently": "^4.0.1"
   }
 }
