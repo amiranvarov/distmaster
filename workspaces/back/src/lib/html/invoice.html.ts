@@ -182,7 +182,7 @@ export const getHTML = ({order, contract, products, shop, phone}) => {
                 <td>${index + 1}</td>
                 <td>${product.name} ${product.flavor ? product.flavor : ''} ${product.size} (${product.pack} бут)</td>
                 <td>блок</td>
-                <td class="text-right">${product.pack}</td>
+                <td class="text-right">${product.quantity}</td>
                 <td class="text-right">${product.price.shop.toLocaleString()}</td>
                 <td class="text-right">${getProductRowCost(product).toLocaleString()}</td>
               </tr>`
@@ -199,8 +199,6 @@ export const getHTML = ({order, contract, products, shop, phone}) => {
         </tbody>
       </table>
       <br />
-      <br />
-      <h4>Сумма прописью: ______________________________________________________ сум.</h4>
       <br />
       <h4>Руководитель: ______________</h4>
       <br />
