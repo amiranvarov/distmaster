@@ -1,3 +1,6 @@
+
+require('dotenv').config();
+
 import Messanger from './lib/Messanger'
 import DB from './db'
 import * as express from 'express'

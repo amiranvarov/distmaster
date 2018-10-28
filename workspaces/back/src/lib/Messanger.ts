@@ -59,11 +59,12 @@ export default class Messenger {
     private botWrapper: any;
 
     constructor() {
+        console.log('proces.env',process.env)
         // if (process.env.NODE_ENV === 'production') {
         //     this.bot = new TelegramBot(TELEGRAM_TOKEN, { webHook: { port: config.telegram.port, host: config.telegram.host } });
         //     this.bot.setWebHook(config.telegram.externalUrl + ':443/bot' + config.telegram.token);
         // } else {
-            this.bot = new TelegramBot(TelegramToken.DEV, { polling: {timeout: 10, interval: 100} });
+            this.bot = new TelegramBot(process.env.BOT_TOKEN, { polling: {timeout: 10, interval: 100} });
         // }
         this.botWrapper = new BotWrapper(this.bot);
     }
