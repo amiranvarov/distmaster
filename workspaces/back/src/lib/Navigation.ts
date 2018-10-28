@@ -8,6 +8,7 @@ import Basket from "./Basket";
 import Order from './Order';
 import * as PDF from './PDF'
 import * as moment from 'moment';
+moment.locale('ru')
 import  { getOrderStatusLocale, getPaymentTypeLocale } from './locale'
 
 
@@ -189,7 +190,26 @@ export async function payByCash(userId) {
 }
 
 export async function payByTransfer(userId) {
-    const invoiceId = await DB.getNextSequenceValue('invoiceid');
+    const contractDate = moment('2017-02-13T00:00:00+00:00');
+    const contract  = {
+        number: 615,
+        date: {
+            day: contractDate.format('DD'),
+            month: contractDate.format('MMMM'),
+            year: contractDate.format('YYYY')
+        }
+    };
+
+    const orderDate = moment();
+    const nextOrderNumber = await DB.getNextSequenceValue('invoiceid');
+    const order = {
+        number: `${contract.number}/${nextOrderNumber}`,
+        date: {
+            day: orderDate.format('DD'),
+            month: orderDate.format('MMMM'),
+            year: orderDate.format('YYYY')
+        }
+    };
 
     const products = await Basket.getProducts(userId);
     await DB.mongo.collection('users')
@@ -207,9 +227,11 @@ export async function payByTransfer(userId) {
         'Как только деньги будут перечислены, я вам сообщю точное время доставки вашего заказа. ',
         Keyboard.payByTransfer());
 
-    await PDF.sendInvoice(userId, products, invoiceId);
-    await Order.create({userId, products, paymentMethod: 'transfer', invoiceId});
-    await Basket.clearBasket(userId);
+    const {phone, shop} = (await DB.mongo.collection('users').findOne({tg_id: userId}));
+    PDF.sendSpecification({userId, products, order, contract});
+    PDF.sendInvoice({userId, products, order, contract, phone, shop });
+    await Order.create({userId, products, paymentMethod: 'transfer', orderNumber: order.number});
+    // await Basket.clearBasket(userId);
 }
 
 export async function getOrders(userId) {

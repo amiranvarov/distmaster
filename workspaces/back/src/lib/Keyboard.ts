@@ -23,7 +23,7 @@ export default class KeyboardBuilder {
 
     static empty() {
         return {
-            "parse_mode": "Markdown",
+            "parse_mode": "html",
             "reply_markup": {
                 "one_time_keyboard": true,
                 "resize_keyboard": true,

@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "module": "commonjs",
     "outDir": "./build/",
     "sourceMap": true,
     "declaration": false,
@@ -8,11 +9,13 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "rootDir": "src",
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "./types"
     ],
     "types": [
-      "node"
+      "node",
     ],
     "lib": [
       "es2017",
@@ -20,6 +23,9 @@
       "dom"
     ]
   },
+  "include": [
+    "src/**/*"
+  ],
   "files": [
     "./src/index.ts",
     "./src/populate.ts"

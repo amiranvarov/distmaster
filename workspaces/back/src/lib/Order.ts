@@ -26,12 +26,12 @@ interface IOrderCreate {
     userId: string,
     products: any;
     paymentMethod: string,
-    invoiceId?: string
+    orderNumber?: string
 }
 
 export default class Order {
 
-    static async create ({userId, products, paymentMethod, invoiceId}: IOrderCreate) {
+    static async create ({userId, products, paymentMethod, orderNumber}: IOrderCreate) {
         products = products.map(product => {
             return {
                 position_id: product._id,
@@ -47,8 +47,8 @@ export default class Order {
             payment_type: paymentMethod,
         };
 
-        if(invoiceId) {
-            order.invoice_id = invoiceId
+        if(orderNumber) {
+            order.order_number = orderNumber
         }
 
         await DB.mongo.collection('orders').insertOne(order);

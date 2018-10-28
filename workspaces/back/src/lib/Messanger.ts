@@ -10,6 +10,7 @@ import * as Actions from '../actions-constants'
 import * as Handlers from '../action-handlers/index'
 import * as Navigation from './Navigation'
 import User from './User'
+import { sendTestPDF} from './PDF'
 
 export let BOT = undefined;
 export function getBot() {
@@ -118,6 +119,25 @@ export default class Messenger {
             case Actions.REQUEST_LOCATION:
                 await Handlers.requestLocation(message, this.botWrapper);
                 break;
+            case Actions.REQUEST_BANK_NAME:
+                await Handlers.requestBankName(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_BANK_ACCOUNT_NUMBER:
+                await Handlers.requestBankAccountNumber(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_MFO:
+                await Handlers.requestMFO(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_OKED:
+                await Handlers.requestOKED(message, this.botWrapper);
+                break;
+            case Actions.REQUEST_INN:
+                await Handlers.requestINN(message, this.botWrapper);
+                break;
+
+
+
+
             case Actions.START:
                 await Handlers.start(message, this.botWrapper);
                 break;

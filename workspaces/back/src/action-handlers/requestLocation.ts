@@ -20,9 +20,10 @@ export async function requestLocation (message: TelegramMessage, bot: any) {
                             ]
                         },
                         action: {
-                            type: Actions.START
+                            type: Actions.REQUEST_BANK_NAME
                         }
                 }}
         );
-    bot.sendMessage(message.from.id, 'Отлично!\n Вы зарегистрировались в нашей системе)\n\nТеперь вы можете сделать свой первый заказ, а так же смотреть статусы заказов', Keyboard.homeKeyboard())
+    // bot.sendMessage(message.from.id, 'Отлично!\n Вы зарегистрировались в нашей системе)\n\nТеперь вы можете сделать свой первый заказ, а так же смотреть статусы заказов', Keyboard.homeKeyboard())
+    bot.sendMessage(message.from.id, 'Введите <b>наименование банка</b>', Keyboard.empty())
 }
