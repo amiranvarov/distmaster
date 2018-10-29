@@ -14,7 +14,7 @@ export const Fanta = [
     {
         name: 'Fanta Apelsin',
         size: '1.0 L PET',
-        pack: 8,
+        pack: 6,
         price: {
             key_account: 4275,
             wholesaler: 4275,
