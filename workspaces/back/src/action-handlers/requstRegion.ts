@@ -8,13 +8,17 @@ export enum RegionsEnum {
     AHANGARAN = 'Ахангаран',
     ALMALIQ = 'Алмалык',
     ANGREN = 'Ангрен',
-    PISKENT = 'Пискент'
+    PISKENT = 'Пискент',
+    BUKA = 'Бука',
+    NURAFSHAN = 'Нурафшан (Туйтепа)'
 }
 export const RegionsArray = [
     RegionsEnum.AHANGARAN,
     RegionsEnum.ALMALIQ,
     RegionsEnum.ANGREN,
-    RegionsEnum.PISKENT
+    RegionsEnum.PISKENT,
+    RegionsEnum.BUKA,
+    RegionsEnum.NURAFSHAN,
 ];
 
 export async function requestRegion (message: TelegramMessage, bot: any) {
