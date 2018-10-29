@@ -1,3 +1,7 @@
+if(!process.env.MONGODB_URI) {
+    require('dotenv').config()
+}
+
 import { MongoClient } from 'mongodb';
 
 
