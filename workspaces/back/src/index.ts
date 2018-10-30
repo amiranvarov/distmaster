@@ -26,6 +26,7 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
         .post('/api/orders/:orderId/approve', Handlers.approve)
         .post('/api/orders/:orderId/reject', Handlers.reject)
         .get('*', function (request, response) {
+            return response.send('hey yo');
             response.sendFile(path.resolve(__dirname, '../front/build/index.html'));
         })
         .listen(PORT, () => console.log(`Listening on ${ PORT }`));
