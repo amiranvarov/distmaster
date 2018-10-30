@@ -36,7 +36,8 @@ export async function requestPhone(userId: number) {
             {$set: {
                     action: {
                         type: Actions.REQUEST_PHONE
-                    }
+                    },
+                    create_time: new Date()
                 }},
             {upsert: true}
         );
