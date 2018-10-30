@@ -17,17 +17,18 @@ export const REJECT_CLIENT_SUCCESS = 'REJECT_CLIENT_SUCCESS';
 export const REJECT_CLIENT_FAIL    = 'REJECT_CLIENT_FAIL';
 
 
-export const fetchClients = (filter = {}) => async (dispatch) => {
+export const fetchClients = (options = {}) => async (dispatch) => {
   try {
     dispatch({
       type: FETCH_CLIENTS_REQUST,
     });
-    const {list, current} = (await axios.get('/api/clients', filter)).data;
+    const {list, page, total} = (await axios.get('/api/clients', {params: options})).data;
     dispatch({
       type: FETCH_CLIENTS_SUCCESS,
       payload: {
         list,
-        current
+        page,
+        total
       }
     })
   } catch (error) {
@@ -39,10 +40,10 @@ export const fetchClients = (filter = {}) => async (dispatch) => {
   }
 };
 
-export const selectClient = (client) => {
+export const selectClient = (index) => {
   return {
     type: SELECT_CLIENT,
-    payload: client
+    payload: index
   }
 };
 

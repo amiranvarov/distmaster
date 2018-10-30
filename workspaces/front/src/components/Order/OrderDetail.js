@@ -9,7 +9,7 @@ import {unselectOrder} from '../../actions/orders'
 
 import ShopInfo from '../Customer/CustomerShopInfo'
 import CustomerContactInfo from '../Customer/CustomerContactInfo'
-import OrderStatus from './OrderStatus'
+import Status from '../Status'
 import ApproveForm from './OrderApproveForm'
 import RejectForm from './OrderRejectForm'
 import Products from './Products'
@@ -64,7 +64,7 @@ class OrderDetail extends React.Component {
                   )}
                   <div>
                     <small><strong>Статус:</strong></small> {" "}
-                    <OrderStatus status={order.status} />
+                    <Status status={order.status} />
                   </div>
                   {order.status == 'approve' && (
                     <div>

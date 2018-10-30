@@ -37,7 +37,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         list: action.payload.list,
-        current: action.payload.current
+        page: action.payload.page,
+        total: action.payload.total,
       };
     case FETCH_CLIENTS_FAIL:
       return {

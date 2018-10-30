@@ -41,7 +41,7 @@ export default class Order {
 
         const order :any = {
             status: ORDER_STATUS.REVIEW,
-            create_time: moment().unix(),
+            create_time: new Date(),
             products,
             user_id: userId,
             payment_type: paymentMethod,

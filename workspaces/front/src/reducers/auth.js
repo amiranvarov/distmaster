@@ -12,7 +12,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
 
-    console.log('Auth action', action)
     switch (action.type) {
         case LOGIN_REQUST:
             return {

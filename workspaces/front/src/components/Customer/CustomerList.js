@@ -7,6 +7,7 @@ import * as moment from 'moment'
 import {fetchClients, selectClient} from '../../actions/clients.action'
 // import OrderStatus from './OrderStatus'
 import ClientDetail from './ClientDetail'
+import CustomerTable from './CustomersTable'
 
 // import './OrderList.css'
 
@@ -16,30 +17,46 @@ class CustomerList extends React.Component {
     this.props.fetchClients()
   }
 
+  handleTableChange = (type, state) => {
+    const transformedFilter = {};
+    for (let key in state.filters) {
+      const value = state.filters[key].filterVal;
+      if (value.trim() == '') {
+        return false;
+      }
+      // const indexOfFirstDot =  key.indexOf('.');
+      // const restOfName = key.substr(indexOfFirstDot +1, key.length)
+
+      transformedFilter[key] = value
+    }
+
+    this.props.fetchClients({
+      filter: transformedFilter,
+      page: state.page
+    })
+  }
+
+  onSelect = (customer, index) => {
+    this.props.selectClient(index)
+  }
+
   render () {
-    const { clients, selectClient, selectedClient } = this.props
+    const { list, page, total, selectClient, selectedClient } = this.props
     return (
       <div style={{width: 800}}>
         <h1>Клиенты</h1>
         <br />
         <br />
-        <Table>
-          <thead>
-          <tr>
-            <th>Клиент</th>
-          </tr>
-          </thead>
-          <tbody>
-          {clients &&
-          clients.map((client) => (
-            <tr key={client._id} onClick={() => selectClient(client)} className="OrderListItem">
-
-              <td>{client.user.shop.name}</td>
-            </tr>
-          ))
-          }
-          </tbody>
-        </Table>
+        {list && (
+          <CustomerTable
+            data={list}
+            page={page}
+            sizePerPage={50}
+            onTableChange={this.handleTableChange}
+            totalSize={total}
+            onSelect={this.onSelect}
+          />
+        )}
 
         {selectedClient && <ClientDetail />}
 
@@ -51,8 +68,10 @@ class CustomerList extends React.Component {
 
 
 export default connect(state => ({
-    clients: state.client.list,
-    selectedClient: state.client.selected
+    list: state.client.list,
+    total: state.client.total,
+    page: state.client.page,
+    selectedClient: state.client.list[state.client.selected]
   }),
   {
     fetchClients,

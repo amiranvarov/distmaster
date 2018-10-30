@@ -1,21 +1,37 @@
 import DB from '../../db'
 import Order from '../../lib/Order'
+import Client from '../../Model/client.model'
 import {BOT} from '../../lib/Messanger'
 import {ObjectID} from 'mongodb'
 import { renderProductsList} from '../../helpers'
 import Keyboard from '../../lib/Keyboard'
 
-const registeredUser = {
-    login: 'admin',
-    password: 'admin'
-}
+const RECORDS_PER_PAGE = 50;
 
-export const fetchList = async (req, res) => {
-    const page = req.body.page || 1;
+export const fetchList = async ({query: {filter, page = 1}}, res) => {
 
-    const orders = await Order.getAll();
 
-    res.json({list: orders, current: 1})
+
+    if (filter) {
+        filter = JSON.parse(filter);
+        for (let key in filter ) {
+            const value = filter[key];
+            filter[key] = new RegExp(value,"ig");
+        }
+    } else {
+        filter = {}
+    }
+
+    const total = await DB.mongo.collection('users').count(filter);
+
+    const clients = await DB.mongo.collection('users')
+        .find(filter)
+        .skip((page * RECORDS_PER_PAGE) - RECORDS_PER_PAGE)
+        .sort({create_time: -1})
+        .limit(RECORDS_PER_PAGE)
+        .toArray();
+
+    res.json({list: clients, page, total})
 };
 
 export const approve = async (req, res) => {

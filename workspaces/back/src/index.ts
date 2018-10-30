@@ -24,6 +24,7 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
         .get('/test', (req, res) => res.send('hello world'))
         .post('/api/auth', Handlers.login)
 
+        .get('/api/orders', Handlers.fetchList)
         .post('/api/orders/:orderId/approve', Handlers.approve)
         .post('/api/orders/:orderId/reject', Handlers.reject)
 

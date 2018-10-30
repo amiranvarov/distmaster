@@ -134,6 +134,9 @@ export default class Messenger {
             case Actions.REQUEST_INN:
                 await Handlers.requestINN(message, this.botWrapper);
                 break;
+            case Actions.REQUEST_CONTRACT_NUMBER:
+                await Handlers.requestContractNumber(message, this.botWrapper);
+                break;
 
 
 

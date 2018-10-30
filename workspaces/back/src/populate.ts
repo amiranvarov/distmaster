@@ -3,6 +3,23 @@ import * as SeedProducts from './Data/index'
 
 (async function () {
 
+
+    // const users = []
+    // for (let i = 0; i < 100; i++) {
+    //     const user = {
+    //         tg_id: i,
+    //         name: `User ${i}`,
+    //         phone: "998977429052",
+    //         shop: {
+    //             name: `Shop ${i}`,
+    //             legal_name: `Legal ${i}`,
+    //             region: 'Ахангаран'
+    //         }
+    //     }
+    //     users.push(user)
+    // }
+    // await DB.mongo.collection('users').insertMany(users);
+
     await DB.init();
     // sequence
     // await DB.mongo.collection('counters').insertOne({

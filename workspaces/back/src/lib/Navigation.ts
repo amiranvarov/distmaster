@@ -37,7 +37,8 @@ export async function requestPhone(userId: number) {
                     action: {
                         type: Actions.REQUEST_PHONE
                     },
-                    create_time: new Date()
+                    create_time: new Date(),
+                    status: 'review'
                 }},
             {upsert: true}
         );

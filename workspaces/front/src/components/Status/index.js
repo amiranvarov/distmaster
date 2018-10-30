@@ -2,7 +2,7 @@ import React from 'react'
 import { Badge } from 'reactstrap';
 
 
-const OrderStatus = ({status}) => {
+const Status = ({status}) => {
   switch (status) {
     case 'review':
       return <Badge>Ожидание</Badge>;
@@ -10,7 +10,9 @@ const OrderStatus = ({status}) => {
       return <Badge color={"success"}>Одобрено</Badge>;
     case 'reject':
       return <Badge color={"danger"}>Отклонено</Badge>;
+    default:
+      return <Badge color={"warning"}>НЕИЗВЕСТНО</Badge>;
   }
 }
 
-export default OrderStatus
+export default Status

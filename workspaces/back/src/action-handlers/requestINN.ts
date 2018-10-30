@@ -11,9 +11,9 @@ export async function requestINN (message: TelegramMessage, bot: any) {
             {$set: {
                     'shop.inn': message.text,
                     action: {
-                        type: Actions.START,
+                        type: Actions.REQUEST_CONTRACT_NUMBER,
                     }
                 }}
         );
-    bot.sendMessage(message.from.id, 'Отлично!\n Вы зарегистрировались в нашей системе)\n\nТеперь вы можете сделать свой первый заказ, а так же смотреть статусы заказов', Keyboard.homeKeyboard())
+    bot.sendMessage(message.from.id, 'Введите <b>номер договора</b>', Keyboard.empty())
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Label, Input, Tex, Alert } from 'reactstrap';
 import ShopInfo from "../Customer/CustomerShopInfo";
-import OrderStatus from "./OrderStatus";
+import Status from "../Status";
 import ApproveForm from "./OrderApproveForm";
 import Products from "./Products";
 import { connect } from 'react-redux'

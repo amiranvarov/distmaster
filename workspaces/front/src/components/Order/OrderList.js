@@ -6,7 +6,7 @@ import { getOrderTotalPrice } from '../../utils/order'
 
 
 import {fetchOrders, selectOrder} from '../../actions/orders'
-import OrderStatus from './OrderStatus'
+import Status from '../Status'
 import OrderDetail from './OrderDetail'
 
 import './OrderList.css'
@@ -46,7 +46,7 @@ class OrderList extends React.Component {
                 <td>{order.user.shop.region}</td>
                 <td>{getOrderTotalPrice(order.products, 'shop').toLocaleString()}</td>
                 <td>{order.payment_type  == 'transfer' ? 'ПЕРЕЧ' : 'НАЛ'}</td>
-                <th><OrderStatus status={order.status}/></th>
+                <th><Status status={order.status}/></th>
               </tr>
             ))
           }
