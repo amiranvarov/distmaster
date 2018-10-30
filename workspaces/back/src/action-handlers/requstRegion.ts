@@ -24,7 +24,7 @@ export const RegionsArray = [
 export async function requestRegion (message: TelegramMessage, bot: any) {
 
 
-        // @ts-ignore
+    // @ts-ignore
     const validRegion = (RegionsArray.indexOf(message.text) > -1);
     if (!validRegion) {
         return await bot.sendMessage(message.from.id, 'Выберите регион из списка ниже');

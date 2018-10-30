@@ -12,7 +12,7 @@ export  const login = (credentials) => async (dispatch) => {
         dispatch({
             type: LOGIN_REQUST,
         });
-        await axios.post('/auth', credentials);
+        await axios.post('/api/auth', credentials);
         dispatch({
             type: LOGIN_SUCCESS,
             payload: {

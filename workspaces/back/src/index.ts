@@ -20,11 +20,14 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
         .use(bodyParser.json())
         .use(express.static(REACT_BUNDLE_LOCATION))
         .get('/test', (req, res) => res.send('hello world'))
-        .post('/auth', Handlers.login)
-        .get('/orders', Handlers.fetchList)
+        .post('/api/auth', Handlers.login)
+        .get('/api/orders', Handlers.fetchList)
 
-        .post('/orders/:orderId/approve', Handlers.approve)
-        .post('/orders/:orderId/reject', Handlers.reject)
+        .post('/api/orders/:orderId/approve', Handlers.approve)
+        .post('/api/orders/:orderId/reject', Handlers.reject)
+        .get('*', function (request, response) {
+            response.sendFile(path.resolve(__dirname, '../front/build/index.html'));
+        })
         .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
     const messenger = new Messanger();

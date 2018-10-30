@@ -22,7 +22,7 @@ export const fetchOrders = (filter = {}) => async (dispatch) => {
     dispatch({
       type: FETCH_ORDERS_REQUST,
     });
-    const {list, current} = (await axios.get('/orders', filter)).data;
+    const {list, current} = (await axios.get('/api/orders', filter)).data;
     dispatch({
       type: FETCH_ORDERS_SUCCESS,
       payload: {
@@ -58,7 +58,7 @@ export const approveOrder = ({orderId, deliveryDate}) => async (dispatch) => {
     dispatch({
       type: APPROVE_ORDER_REQUEST,
     });
-    await axios.post(`/orders/${orderId}/approve`, {deliveryDate});
+    await axios.post(`/api/orders/${orderId}/approve`, {deliveryDate});
     dispatch({
       type: APPROVE_ORDER_SUCCESS,
       payload: {
@@ -78,7 +78,7 @@ export const rejectOrder = ({orderId, reason}) => async (dispatch) => {
     dispatch({
       type: REJECT_ORDER_REQUEST,
     });
-    await axios.post(`/orders/${orderId}/reject`, { reason });
+    await axios.post(`/api/orders/${orderId}/reject`, { reason });
     dispatch({
       type: REJECT_ORDER_SUCCESS,
       payload: {
