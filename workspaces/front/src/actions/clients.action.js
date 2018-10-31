@@ -16,6 +16,10 @@ export const REJECT_CLIENT_REQUEST = 'REJECT_CLIENT_REQUEST';
 export const REJECT_CLIENT_SUCCESS = 'REJECT_CLIENT_SUCCESS';
 export const REJECT_CLIENT_FAIL    = 'REJECT_CLIENT_FAIL';
 
+export const UPDATE_CLIENT_REQUEST = 'UPDATE_CLIENT_REQUEST';
+export const UPDATE_CLIENT_SUCCESS = 'UPDATE_CLIENT_SUCCESS';
+export const UPDATE_CLIENT_FAIL    = 'UPDATE_CLIENT_FAIL';
+
 
 export const fetchClients = (options = {}) => async (dispatch) => {
   try {
@@ -93,3 +97,23 @@ export const rejectClient = ({clientId, reason}) => async (dispatch) => {
     throw error
   }
 };
+
+export const updateClient = ({meta: form, data}) => async  dispatch => {
+  try {
+    dispatch({
+      type: UPDATE_CLIENT_REQUEST,
+    });
+    const client = await axios.put(`/api/client/${data._id}`, data);
+    dispatch({
+      type: UPDATE_CLIENT_SUCCESS,
+      payload: {
+        client,
+      }
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_CLIENT_FAIL,
+    });
+    throw error
+  }
+}

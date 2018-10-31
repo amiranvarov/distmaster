@@ -26,6 +26,7 @@ export const fetchList = async ({query: {filter, page = 1}}, res) => {
 
     const clients = await DB.mongo.collection('users')
         .find(filter)
+        .project({action: 0})
         .skip((page * RECORDS_PER_PAGE) - RECORDS_PER_PAGE)
         .sort({create_time: -1})
         .limit(RECORDS_PER_PAGE)

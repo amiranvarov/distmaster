@@ -1,0 +1,10 @@
+.client-detail input,
+.client-detail select,
+.client-detail textarea
+{
+    width: 100% !important;
+}
+
+.client-detail table tr td:first-child {
+    width: 30% !important;
+}
