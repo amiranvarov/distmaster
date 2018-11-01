@@ -30,6 +30,7 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
 
         // CLIENTS
         .get('/api/clients', ClientHandler.fetchList)
+        .put('/api/clients/:clientId', ClientHandler.update)
         .post('/api/clients/:clientId/approve', ClientHandler.approve)
         .post('/api/clients/:clientId/reject', ClientHandler.reject)
 

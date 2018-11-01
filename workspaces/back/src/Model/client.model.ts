@@ -35,5 +35,14 @@ export default class Client {
         return await DB.mongo.collection('users').findOne(filter);
     }
 
+    static async replace (documentId, update) {
+        if (!documentId) {
+            throw "update filter must be passed"
+        }
+        await DB.mongo.collection('users').replaceOne({_id: new ObjectID(documentId)}, update);
+
+        return await DB.mongo.collection('users').findOne({_id: new ObjectID(documentId)});
+    }
+
 
 }

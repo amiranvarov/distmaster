@@ -12,11 +12,16 @@ import {
 
   REJECT_CLIENT_REQUEST,
   REJECT_CLIENT_SUCCESS,
-  REJECT_CLIENT_FAIL
+  REJECT_CLIENT_FAIL,
+
+  UPDATE_CLIENT_REQUEST,
+  UPDATE_CLIENT_SUCCESS,
+  UPDATE_CLIENT_FAIL
 
 } from '../actions/clients.action'
 
 import _ from 'lodash'
+import {update, deepUpdate} from 'immupdate'
 
 const initialState = {
   loading: false,
@@ -69,6 +74,43 @@ export default (state = initialState, action) => {
         ...state,
         list: _.filter(state.list, function (f) { return f._id !== action.payload.orderId; }),
         selected: null
+      };
+
+    case UPDATE_CLIENT_REQUEST:
+      return {
+        ...state,
+        update: {
+          requesting: true,
+          error: null,
+          success: false
+        }
+      };
+
+    case UPDATE_CLIENT_FAIL:
+      return {
+        ...state,
+        update: {
+          requesting: false,
+          error: action.payload.error,
+          success: false
+        }
+      };
+
+    case UPDATE_CLIENT_SUCCESS:
+      const clientIndex = state.list.findIndex(client => client._id === action.payload.client._id)
+
+      state.list = deepUpdate(state.list)
+        .at(clientIndex)
+        .set(action.payload.client);
+
+      return {
+        ...state,
+        selected: null,
+        update: {
+          requesting: false,
+          error: null,
+          success: true
+        }
       };
 
     default:

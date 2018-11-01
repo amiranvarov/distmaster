@@ -103,11 +103,11 @@ export const updateClient = ({meta: form, data}) => async  dispatch => {
     dispatch({
       type: UPDATE_CLIENT_REQUEST,
     });
-    const client = await axios.put(`/api/client/${data._id}`, data);
+    const response = await axios.put(`/api/clients/${data._id}`, data);
     dispatch({
       type: UPDATE_CLIENT_SUCCESS,
       payload: {
-        client,
+        client: response.data,
       }
     });
   } catch (error) {

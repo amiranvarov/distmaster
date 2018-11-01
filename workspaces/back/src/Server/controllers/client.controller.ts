@@ -5,6 +5,7 @@ import {BOT} from '../../lib/Messanger'
 import {ObjectID} from 'mongodb'
 import { renderProductsList} from '../../helpers'
 import Keyboard from '../../lib/Keyboard'
+import * as _ from 'lodash'
 
 const RECORDS_PER_PAGE = 50;
 
@@ -103,3 +104,19 @@ export const reject = async (req, res) => {
     BOT.sendMessage(order.user_id, msg, {"parse_mode": "html"})
     res.sendStatus(200)
 }
+
+export const update = async (req, res) => {
+    const { clientId } = req.params;
+    const client = req.body;
+
+    delete client._id;
+
+    if (!clientId || !clientId) {
+        return res.sendStatus(400);
+    }
+
+    const clientInDB = await Client.getOne({_id: new ObjectID(clientId)});
+    const merged = _.merge(clientInDB, client);
+    const updatedDocument = await Client.replace(clientInDB._id, merged);
+    res.json(updatedDocument);
+};
