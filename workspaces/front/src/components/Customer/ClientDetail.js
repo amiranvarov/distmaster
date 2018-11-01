@@ -13,6 +13,7 @@ import Status from "../Status";
 import ApproveForm from "../Order/OrderApproveForm";
 import Products from "../Order/Products";
 import RejectForm from "../Order/OrderRejectForm";
+import { YMaps, Map } from 'react-yandex-maps';
 import * as moment from 'moment'
 
 class ClientDetail extends React.Component {
@@ -207,7 +208,11 @@ class ClientDetail extends React.Component {
             </Col>
 
             <Col>
-              hey
+              <YMaps>
+                <div>
+                  <Map width={300} defaultState={{ center: client.shop.location.coordinates, zoom: 18 }} />
+                </div>
+              </YMaps>
             </Col>
           </Row>
         </ModalBody>
@@ -219,7 +224,6 @@ class ClientDetail extends React.Component {
 
 
 const onSubmit = (data, dispatch, { form }) => {
-  console.log('Data', data)
   dispatch(updateClient({ meta: { form }, data }))
 }
 

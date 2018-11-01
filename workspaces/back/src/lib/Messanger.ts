@@ -59,7 +59,6 @@ export default class Messenger {
     private botWrapper: any;
 
     constructor() {
-        console.log('proces.env',process.env)
         // if (process.env.NODE_ENV === 'production') {
         //     this.bot = new TelegramBot(TELEGRAM_TOKEN, { webHook: { port: config.telegram.port, host: config.telegram.host } });
         //     this.bot.setWebHook(config.telegram.externalUrl + ':443/bot' + config.telegram.token);

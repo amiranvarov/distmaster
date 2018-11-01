@@ -25,13 +25,20 @@ export const fetchList = async ({query: {filter, page = 1}}, res) => {
 
     const total = await DB.mongo.collection('users').count(filter);
 
-    const clients = await DB.mongo.collection('users')
+    let clients = await DB.mongo.collection('users')
         .find(filter)
         .project({action: 0})
         .skip((page * RECORDS_PER_PAGE) - RECORDS_PER_PAGE)
         .sort({create_time: -1})
         .limit(RECORDS_PER_PAGE)
         .toArray();
+
+    clients = clients.map(client => {
+        if (client.shop && client.shop.location) {
+            client.shop.location.coordinates.reverse()
+        }
+        return client;
+     })
 
     res.json({list: clients, page, total})
 };
