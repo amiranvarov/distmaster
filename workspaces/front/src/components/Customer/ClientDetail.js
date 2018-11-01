@@ -203,16 +203,19 @@ class ClientDetail extends React.Component {
                     </tr>
                   </tbody>
                 </Table>
-                <input type={"submit"} value={"Отправить"} />
+                <input type={"submit"} value={"Сохранить"} />
               </form>
             </Col>
 
             <Col>
               <YMaps>
                 <div>
-                  <Map width={300} defaultState={{ center: client.shop.location.coordinates, zoom: 18 }} />
+                  <Map width={300} defaultState={{ center: client.shop.location.coordinates, zoom: 16 }} />
                 </div>
               </YMaps>
+              <a
+                target={"blank"}
+                href={`https://yandex.uz/maps/?text=${client.shop.location.coordinates.join(',')}`}>Показать на карте</a>
             </Col>
           </Row>
         </ModalBody>
