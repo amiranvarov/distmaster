@@ -13,6 +13,7 @@ import Status from "../Status";
 import ApproveForm from "../Order/OrderApproveForm";
 import Products from "../Order/Products";
 import RejectForm from "../Order/OrderRejectForm";
+import * as moment from 'moment'
 
 class ClientDetail extends React.Component {
 
@@ -186,6 +187,16 @@ class ClientDetail extends React.Component {
                         <Field
                           name="create_time"
                           component="input"
+                          type={"date"}
+                          normalize={(value) => {
+                            const normilized =  moment(value).format();
+                            console.log('normilized', normilized)
+                            return normilized;
+                          }}
+                          format={(value) => {
+                            const formattedValue =  moment(value).format('YYYY-MM-DD')
+                            return formattedValue
+                          }}
                         />
                       </td>
                     </tr>
