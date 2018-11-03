@@ -15,6 +15,7 @@ import Products from "../Order/Products";
 import RejectForm from "../Order/OrderRejectForm";
 import { YMaps, Map } from 'react-yandex-maps';
 import * as moment from 'moment'
+import _ from 'lodash'
 
 class ClientDetail extends React.Component {
 
@@ -37,7 +38,8 @@ class ClientDetail extends React.Component {
       error,
       submitFailed,
     } = this.props;
-    const { shop } = client
+    const { shop } = client;
+    const shopLocation = _.get(client, 'shop.location.coordinates', null);
 
     return (
       <Modal isOpen={true} className="modal-lg">
@@ -208,14 +210,24 @@ class ClientDetail extends React.Component {
             </Col>
 
             <Col>
-              <YMaps>
-                <div>
-                  <Map width={300} defaultState={{ center: client.shop.location.coordinates, zoom: 16 }} />
-                </div>
-              </YMaps>
-              <a
-                target={"blank"}
-                href={`https://yandex.uz/maps/?text=${client.shop.location.coordinates.join(',')}`}>Показать на карте</a>
+              {shopLocation
+                ? (
+                  <React.Fragment>
+                    <YMaps>
+                      <div>
+                        <Map width={300} defaultState={{ center: shopLocation, zoom: 16 }} />
+                      </div>
+                    </YMaps>
+                    <a
+                      target={"blank"}
+                      href={`https://yandex.uz/maps/?text=${client.shop.location.coordinates.join(',')}`}
+                    >
+                      Показать на карте
+                    </a>
+                  </React.Fragment>
+                )
+                : ''
+              }
             </Col>
           </Row>
         </ModalBody>
