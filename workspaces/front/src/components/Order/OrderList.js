@@ -20,7 +20,7 @@ class OrderList extends React.Component {
   render () {
     const { orders, selectedOrder, selectOrder } = this.props
     return (
-      <div style={{width: 800}}>
+      <div>
         <h1>Заказы</h1>
         <br />
         <br />

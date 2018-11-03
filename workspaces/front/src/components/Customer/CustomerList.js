@@ -43,7 +43,7 @@ class CustomerList extends React.Component {
   render () {
     const { list, page, total, selectClient, selectedClient } = this.props
     return (
-      <div style={{width: 800}}>
+      <div>
         <h1>Клиенты</h1>
         <br />
         <br />

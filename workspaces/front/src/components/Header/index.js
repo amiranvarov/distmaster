@@ -14,6 +14,7 @@ import {
   DropdownItem
 } from 'reactstrap';
 import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import {logOut} from '../../actions/auth'
 
@@ -23,6 +24,23 @@ const Header = (props) => (
     <Navbar color="light" light expand="md">
       <Container>
         <NavbarBrand href="/">BETMASTER</NavbarBrand>
+        <Nav navbar>
+          <NavItem>
+            <NavLink>
+              <Link to={"/orders"}>Заказы</Link>
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink>
+              <Link to={"/clients"}>Клиенты</Link>
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink>
+              <Link to={"/orders"}>Склад</Link>
+            </NavLink>
+          </NavItem>
+        </Nav>
 
         <Nav className="ml-auto" navbar>
           <NavItem>
