@@ -21,6 +21,7 @@
     "@types/express": "^4.16.0",
     "@types/mongodb": "^3.1.10",
     "@types/node": "^10.11.4",
+    "aws-sdk": "^2.348.0",
     "body-parser": "^1.18.3",
     "del-cli": "^1.1.0",
     "dotenv": "^6.1.0",

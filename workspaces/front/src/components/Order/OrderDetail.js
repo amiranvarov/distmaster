@@ -57,11 +57,9 @@ class OrderDetail extends React.Component {
                   <div>
                     <small><strong>Форма оплаты:</strong></small> {order.payment_type === 'transfer'? ' Перечисленые' : 'Наличные'}
                   </div>
-                  {order.payment_type === 'transfer' && (
-                    <div>
-                      <small><strong>Номер договора:</strong></small> {order.invoice_id}
-                    </div>
-                  )}
+                  <div>
+                    <small><strong>Счет на оплату:</strong></small> <a href={order.invoice_url} target={"_blank"}>{order.number}</a>
+                  </div>
                   <div>
                     <small><strong>Статус:</strong></small> {" "}
                     <Status status={order.status} />

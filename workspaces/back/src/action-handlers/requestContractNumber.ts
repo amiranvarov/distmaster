@@ -13,7 +13,8 @@ export async function requestContractNumber (message: TelegramMessage, bot: any)
                     'shop.contract_number': message.text,
                     action: {
                         type: Actions.START,
-                    }
+                    },
+                    last_order_number: 0
                 }}
         );
     bot.sendMessage(message.from.id, 'Отлично!\n Вы зарегистрировались в нашей системе)\n\nТеперь вы можете сделать свой первый заказ, а так же смотреть статусы заказов', Keyboard.homeKeyboard())

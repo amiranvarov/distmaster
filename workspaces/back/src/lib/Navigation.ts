@@ -10,6 +10,8 @@ import * as PDF from './PDF'
 import * as moment from 'moment';
 moment.locale('ru')
 import  { getOrderStatusLocale, getPaymentTypeLocale } from './locale'
+import {uploadToS3} from "./S3";
+import * as fs from "fs";
 
 
 export async function generateFromAction (action, userId: string) {
@@ -169,16 +171,25 @@ export async function checkout(userId) {
 }
 
 export async function payByCash(userId) {
+    const user = await User.findOne({tg_id: userId});
+    const { phone, shop } = user;
     const products = await Basket.getProducts(userId);
+    const contract  = User.getContractDetails(user);
+    const order = User.getNextOrderNumber(user);
 
     await DB.mongo.collection('users')
         .updateOne(
             {tg_id: userId},
-            {$set: {
+            {
+                $set: {
                     action: {
                         type: Actions.PAY_BY_CASH
                     }
-                }}
+                },
+                $inc: {
+                    last_order_number: 1
+                }
+            }
         );
     BOT.sendMessage(
         userId,
@@ -187,52 +198,57 @@ export async function payByCash(userId) {
         'отменить ваш заказ в разделе "Мои заказы" в главное меню',
         Keyboard.payByCash());
 
-    await Order.create({userId, products, paymentMethod: 'cash'});
+    const fileURL = await PDF.getInvoiceFile({userId, products, order, contract, phone, shop });
+
+    await Order.create({
+        userId,
+        products,
+        paymentMethod: 'cash',
+        invoiceURL: fileURL
+    });
+
     await Basket.clearBasket(userId);
 }
 
 export async function payByTransfer(userId) {
-    const contractDate = moment('2017-02-13T00:00:00+00:00');
-    const contract  = {
-        number: 615,
-        date: {
-            day: contractDate.format('DD'),
-            month: contractDate.format('MMMM'),
-            year: contractDate.format('YYYY')
-        }
-    };
+    const user = await User.findOne({tg_id: userId});
+    const { phone, shop } = user;
 
-    const orderDate = moment();
-    const nextOrderNumber = await DB.getNextSequenceValue('invoiceid');
-    const order = {
-        number: `${nextOrderNumber}/${contract.number}`,
-        date: {
-            day: orderDate.format('DD'),
-            month: orderDate.format('MMMM'),
-            year: orderDate.format('YYYY')
-        }
-    };
+    const contract  = User.getContractDetails(user);
+    const order = User.getNextOrderNumber(user);
 
     const products = await Basket.getProducts(userId);
     await DB.mongo.collection('users')
         .updateOne(
             {tg_id: userId},
-            {$set: {
+            {
+                $set: {
                     action: {
                         type: Actions.PAY_BY_TRANSFER
                     },
-                }}
+
+                },
+                $inc: {
+                    last_order_number: 1
+                }
+            }
         );
-    BOT.sendMessage(
+    await BOT.sendMessage(
         userId,
         'ОК, сейчас я вам отправлю счет на оплату (это может занять пару минут). ' +
         'Как только деньги будут перечислены, я вам сообщю точное время доставки вашего заказа. ',
         Keyboard.payByTransfer());
+    const fileURL = await PDF.getInvoiceFile({userId, products, order, contract, phone, shop });
 
-    const {phone, shop} = (await DB.mongo.collection('users').findOne({tg_id: userId}));
-    // PDF.sendSpecification({userId, products, order, contract});
-    PDF.sendInvoice({userId, products, order, contract, phone, shop });
-    await Order.create({userId, products, paymentMethod: 'transfer', orderNumber: order.number});
+    await BOT.sendDocument(userId, fileURL, {caption: 'Счет на оплату'});
+
+    await Order.create({
+        userId,
+        products,
+        paymentMethod: 'transfer',
+        orderNumber: `${contract.number}/${order.number}`,
+        invoiceURL: fileURL
+    });
     await Basket.clearBasket(userId);
 }
 

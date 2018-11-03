@@ -1,6 +1,7 @@
 import DB from '../db'
 import * as Actions from "../actions-constants";
 import {ObjectID} from "bson";
+import * as moment from 'moment'
 
 
 export default class User {
@@ -10,7 +11,7 @@ export default class User {
             .findOne(filter,
                 {
                     fields:
-                        {name: 1, phone: 1, shop: 1, tg_id: 1}});
+                        {action: 0}});
     }
 
     static async userExists (userId: number | string): Promise<boolean> {
@@ -88,4 +89,31 @@ export default class User {
             }
             );
     }
+
+    static getContractDetails (user) {
+        const createMoment = moment(user.create_time);
+        return {
+            number: user.shop.contract_number,
+            date: {
+                day: createMoment.format('DD'),
+                month: createMoment.format('MMMM'),
+                year: createMoment.format('YYYY')
+            }
+        }
+    }
+
+    static getNextOrderNumber (user) {
+        const createMoment = moment();
+        const nextNumber = (user.last_order_number + 1);
+        return {
+            number: nextNumber,
+            date: {
+                day: createMoment.format('DD'),
+                month: createMoment.format('MMMM'),
+                year: createMoment.format('YYYY')
+            }
+        }
+    }
+
+    static increment
 }

@@ -114,8 +114,8 @@ export const getHTML = ({order, contract, products, shop, phone}) => {
 
       <div class="heading">
         <h3 class="text-center m-bottom">Счет на оплату</h3>
-        <h4 class="text-center m-bottom"> Спецификация №
-          <span class="underline">${order.number}</span> от «<span class="underline">${order.date.day}</span>»
+        <h4 class="text-center m-bottom"> №
+          <span class="underline">${contract.number}/${order.number}</span> от «<span class="underline">${order.date.day}</span>»
           <span class="underline"> ${order.date.month}</span> ${order.date.year}г
         </h4>
         <h4 class="text-center m-bottom"> к договору - поставки №
