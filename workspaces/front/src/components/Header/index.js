@@ -37,7 +37,7 @@ const Header = (props) => (
           </NavItem>
           <NavItem>
             <NavLink>
-              <Link to={"/orders"}>Склад</Link>
+              <Link to={"/products"}>Склад</Link>
             </NavLink>
           </NavItem>
         </Nav>

@@ -1,9 +1,7 @@
-import React from 'react'
+import * as React from 'react'
 
-const ProductList = () => (
-  <div>
-    <h1>Продукты</h1>
-  </div>
-);
+export const ProductList = () => (
+  <h1>Скоро...</h1>
+)
 
-export default ProductList
+export default ProductList;
