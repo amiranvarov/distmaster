@@ -13,7 +13,7 @@ import Status from "../Status";
 import ApproveForm from "../Order/OrderApproveForm";
 import Products from "../Order/Products";
 import RejectForm from "../Order/OrderRejectForm";
-import { YMaps, Map } from 'react-yandex-maps';
+import { YMaps, Map, GeoObject } from 'react-yandex-maps';
 import * as moment from 'moment'
 import _ from 'lodash'
 
@@ -215,12 +215,19 @@ class ClientDetail extends React.Component {
                   <React.Fragment>
                     <YMaps>
                       <div>
-                        <Map width={300} defaultState={{ center: shopLocation, zoom: 16 }} />
+                        <Map width={300} defaultState={{ center: shopLocation, zoom: 16 }} >
+                          <GeoObject
+                            geometry={{
+                              type: 'Point',
+                              coordinates: shopLocation,
+                            }}
+                          />
+                        </Map>
                       </div>
                     </YMaps>
                     <a
                       target={"blank"}
-                      href={`https://yandex.uz/maps/?text=${client.shop.location.coordinates.join(',')}`}
+                      href={`https://yandex.uz/maps/?text=${client.shop.location.coordinates.join(',')}&pt=${client.shop.location.coordinates.join(',')}`}
                     >
                       Показать на карте
                     </a>
