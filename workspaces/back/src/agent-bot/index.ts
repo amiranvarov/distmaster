@@ -41,6 +41,8 @@ bot.use(session())
 bot.use(stage.middleware())
 bot.command('start', async(ctx) => {
     const userExists = await Agent.exists({tg_id: ctx.from.id});
+    console.log('User id:', ctx.from.id)
+    console.log('userExists', userExists)
     if (!userExists) {
         ctx.scene.enter('greeter')
     }

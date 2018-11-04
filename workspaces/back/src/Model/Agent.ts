@@ -12,7 +12,7 @@ interface AgentCreateInterface {
 
 export default class  Agent {
 
-    static async exists ({filter}: any) {
+    static async exists (filter: any) {
         const count = await DB.mongo.collection('agents').count(filter);
         return count > 0
     }
