@@ -40,7 +40,7 @@ class OrderList extends React.Component {
             orders.map((order) => (
               <tr key={order._id} onClick={() => selectOrder(order)} className="OrderListItem">
                 <td>
-                  <div>{moment.unix(order.create_time).format('DD/MM/YYYY hh:mm')}</div>
+                  <div>{moment().format('DD/MM/YYYY hh:mm')}</div>
                 </td>
                 <td>{order.user.shop.name}</td>
                 <td>{order.user.shop.region}</td>
