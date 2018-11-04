@@ -33,7 +33,7 @@ greeter.on('message', async (ctx) => {
 const stage = new Stage()
 stage.command('cancel', leave())
 
-// Scene registration
+// Scene registration awdwd
 stage.register(greeter)
 
 export const bot = new Telegraf(process.env.AGENT_BOT_TOKEN)
