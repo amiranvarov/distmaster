@@ -40,6 +40,11 @@ const Header = (props) => (
               <Link to={"/products"}>Склад</Link>
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink>
+              <Link to={"/agents"}>Агенты</Link>
+            </NavLink>
+          </NavItem>
         </Nav>
 
         <Nav className="ml-auto" navbar>

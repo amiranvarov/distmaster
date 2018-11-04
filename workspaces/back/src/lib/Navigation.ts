@@ -2,6 +2,7 @@ import DB from '../db'
 import * as Actions from '../actions-constants'
 import User from "./User";
 import Position from '../Model/Position'
+import Agent from '../Model/Agent'
 import Keyboard from "./Keyboard";
 import { BOT } from './Messanger'
 import Basket from "./Basket";
@@ -12,6 +13,8 @@ moment.locale('ru')
 import  { getOrderStatusLocale, getPaymentTypeLocale } from './locale'
 import {uploadToS3} from "./S3";
 import * as fs from "fs";
+import { bot as AgentBot} from '../agent-bot'
+import {renderProductsList, getOrderTotalPrice} from '../helpers'
 
 
 export async function generateFromAction (action, userId: string) {
@@ -200,14 +203,36 @@ export async function payByCash(userId) {
 
     const fileURL = await PDF.getInvoiceFile({userId, products, order, contract, phone, shop });
 
+    const orderNumber = `${contract.number}/${order.number}`;
     await Order.create({
         userId,
         products,
         paymentMethod: 'cash',
-        invoiceURL: fileURL
+        invoiceURL: fileURL,
+        orderNumber,
     });
 
     await Basket.clearBasket(userId);
+
+    // отправляем уведомление агентам
+    let message = '' +
+        'НОВЫЙ ЗАКАЗ\n\n' +
+        `РЕГИОН: ${user.shop.region}\n`+
+        `НАЗВАНИЕ: ${user.shop.name} (${user.shop.legal_name})\n`+
+        `АДРЕС: ${user.shop.location_text}\n`+
+        `ФОРМА ОПЛАТЫ: Наличные\n`+
+        `СЧЕТ НА ОПЛАТУ: <a href="${fileURL}">${orderNumber}</a>\n`+
+        `ТОВАРЫ:\n\n`;
+    message += renderProductsList(products);
+
+    const agents = await Agent.getAll({region: user.shop.region});
+    await Promise.all(agents.map(async agent => {
+        await AgentBot.telegram.sendMessage(
+            agent.tg_id,
+            message,
+            {"parse_mode": "html",}
+        )
+    }))
 }
 
 export async function payByTransfer(userId) {
@@ -242,14 +267,35 @@ export async function payByTransfer(userId) {
 
     await BOT.sendDocument(userId, fileURL, {caption: 'Счет на оплату'});
 
+    const orderNumber = `${contract.number}/${order.number}`;
     await Order.create({
         userId,
         products,
         paymentMethod: 'transfer',
-        orderNumber: `${contract.number}/${order.number}`,
+        orderNumber,
         invoiceURL: fileURL
     });
     await Basket.clearBasket(userId);
+
+    // отправляем уведомление агентам
+    let message = '' +
+        'НОВЫЙ ЗАКАЗ\n\n' +
+        `РЕГИОН: ${user.shop.region}\n`+
+        `НАЗВАНИЕ: ${user.shop.name} (${user.shop.legal_name})\n`+
+        `АДРЕС: ${user.shop.location_text}\n`+
+        `ФОРМА ОПЛАТЫ: Перечисление\n`+
+        `СЧЕТ НА ОПЛАТУ: <a href="${fileURL}">${orderNumber}</a>\n`+
+        `ТОВАРЫ:\n\n`;
+    message += renderProductsList(products);
+
+    const agents = await Agent.getAll({region: user.shop.region});
+    await Promise.all(agents.map(async agent => {
+        await AgentBot.telegram.sendMessage(
+            agent.tg_id,
+            message,
+            {"parse_mode": "html",}
+        )
+    }))
 }
 
 export async function getOrders(userId) {

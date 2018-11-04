@@ -7,6 +7,8 @@ import * as express from 'express'
 import * as path from 'path'
 import * as Handlers from './Server/controllers'
 import * as ClientHandler from './Server/controllers/client.controller'
+import * as AgentHandler from './Server/controllers/agent.controller'
+import * as AgentBot from './agent-bot';
 
 import * as bodyParser from 'body-parser'
 
@@ -34,6 +36,13 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
         .post('/api/clients/:clientId/approve', ClientHandler.approve)
         .post('/api/clients/:clientId/reject', ClientHandler.reject)
 
+        // agents
+        .get('/api/agents', AgentHandler.fetchList)
+        .put('/api/agents/:agentId', AgentHandler.update)
+        .post('/api/agents/:agentId/approve', AgentHandler.approve)
+        .post('/api/agents/:agentId/reject', AgentHandler.reject)
+
+
         .get('*', function (request, response) {
             response.sendFile(path.resolve(__dirname, '../../front/build/index.html'));
         })
@@ -41,6 +50,7 @@ const REACT_BUNDLE_LOCATION = path.resolve('../front/build');
 
     const messenger = new Messanger();
     await messenger.listen();
+    AgentBot.init();
     await DB.init()
 
 })();
