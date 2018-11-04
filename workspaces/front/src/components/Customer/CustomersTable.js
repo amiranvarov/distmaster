@@ -22,13 +22,13 @@ const columns = [{
   text: 'Регион',
   filter: textFilter(),
 },
-  {
-    dataField: 'status',
-    text: 'Статус',
-    formatter: (col, row) => (
-      <Status status={col} />
-    )
-  }
+  // {
+  //   dataField: 'status',
+  //   text: 'Статус',
+  //   formatter: (col, row) => (
+  //     <Status status={col} />
+  //   )
+  // }
 ];
 
 const CustomersTable = ({ data, page, sizePerPage, onTableChange, totalSize, onSelect }) => (
