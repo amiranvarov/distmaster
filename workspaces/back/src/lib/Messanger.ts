@@ -83,7 +83,12 @@ export default class Messenger {
 
     async handleInput(message: TelegramMessage) {
         const { text, from } = message;
-        const userId = from.id
+        const userId = from.id;
+
+        await DB.mongo.collection('bot_messages').insertOne({
+            created_at: new Date(),
+            ...message
+        });
 
         const user = await DB.mongo.collection('users').findOne({tg_id: from.id});
 
