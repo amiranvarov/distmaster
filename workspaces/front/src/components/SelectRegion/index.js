@@ -14,6 +14,7 @@ export const SelectRegion = ({name}) => (
     <option value="Пискент">Пискент</option>
     <option value="Бука">Бука</option>
     <option value="Нурафшан (Туйтепа)">Нурафшан (Туйтепа)</option>
+    <option value="all">Все регионы</option>
   </Field>
 );
 

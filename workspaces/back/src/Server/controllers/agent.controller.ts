@@ -100,5 +100,8 @@ export const update = async (req, res) => {
     if(updatedDocument.region !== 'none') {
         await AgentBot.telegram.sendMessage(agentInDB.tg_id, `Вам был задан регион: ${updatedDocument.region}`)
     }
+    if(updatedDocument.region === 'all') {
+        await AgentBot.telegram.sendMessage(agentInDB.tg_id, `Вы зарегистрированы как менеджер, Вы будете получать уведомления от всех регионов`)
+    }
     res.json(updatedDocument);
 };

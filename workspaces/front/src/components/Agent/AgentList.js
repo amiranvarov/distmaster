@@ -4,6 +4,7 @@ import {Table} from 'reactstrap'
 import {fetchAgents, selectAgent} from "../../actions/agents.action";
 import Status from '../Status'
 import AgentDetail from "./AgentDetail";
+import * as moment from 'moment'
 
 
 export class AgentList extends React.Component {
@@ -41,9 +42,9 @@ export class AgentList extends React.Component {
                 <tr key={index} onClick={() => selectAgent(index)}>
                   <td>{agent.name}</td>
                   <td>{agent.phone}</td>
-                  <td>{agent.create_time}</td>
+                  <td>{moment(agent.create_time).format('YYYY-MM-DD hh:mm')}</td>
                   <td>
-                    {agent.region === 'none' ? 'Не указано' : agent.region}
+                    {agent.region === 'none' ? 'Не указано' : agent.region === 'all' ? 'Все регионы' : agent.region}
                   </td>
                 </tr>
               )

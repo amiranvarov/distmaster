@@ -2,7 +2,7 @@ import React from 'react'
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter, Comparator } from 'react-bootstrap-table2-filter';
-import Status from '../Status'
+import * as moment from 'moment'
 
 
 const columns = [{
@@ -22,13 +22,13 @@ const columns = [{
   text: 'Регион',
   filter: textFilter(),
 },
-  // {
-  //   dataField: 'status',
-  //   text: 'Статус',
-  //   formatter: (col, row) => (
-  //     <Status status={col} />
-  //   )
-  // }
+  {
+    dataField: 'create_time',
+    text: 'Дата регистрации',
+    formatter: (col, row) => (
+      <div>{moment(col).format('YYYY-MM-DD hh:mm')}</div>
+    )
+  }
 ];
 
 const CustomersTable = ({ data, page, sizePerPage, onTableChange, totalSize, onSelect }) => (

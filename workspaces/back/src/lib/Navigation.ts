@@ -296,6 +296,16 @@ export async function payByTransfer(userId) {
             {"parse_mode": "html",}
         )
     }))
+
+    // отправляем менеджерам
+    const managers = await Agent.getAll({region: 'all'});
+    await Promise.all(managers.map(async manager => {
+        await AgentBot.telegram.sendMessage(
+            manager.tg_id,
+            message,
+            {"parse_mode": "html",}
+        )
+    }))
 }
 
 export async function getOrders(userId) {
