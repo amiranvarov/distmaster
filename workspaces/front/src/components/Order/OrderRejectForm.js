@@ -18,7 +18,7 @@ class OrderRejectForm extends React.Component {
     e.preventDefault();
 
 
-    if(this.state.reason.trim().length < 5) {
+    if(this.state.reason.trim().length < 1) {
       return this.setState({error: 'Кажется вы не указали причину отказа'})
     }
 
@@ -40,6 +40,7 @@ class OrderRejectForm extends React.Component {
 
   render () {
     const { error } = this.state;
+    console.log('RejectForm State', this.state)
 
     return (
       <Modal isOpen={this.props.isOpen}>
@@ -61,7 +62,7 @@ class OrderRejectForm extends React.Component {
 
 
 export default connect(state => ({
-  selectedOrder: state.order.selected
+  selectedOrder: state.order.list[state.order.selected]
 }), {
   rejectOrder
 })(OrderRejectForm)

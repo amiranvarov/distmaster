@@ -25,7 +25,6 @@ export const fetchList = async ({query: {filter, page = 1}}, res) => {
         filter = {}
     }
 
-    console.log('filter', filter)
     if(filter.status === 'all') {
         delete filter.status;
     }
@@ -85,8 +84,6 @@ export const reject = async (req, res) => {
     if (!orderId || !reason) {
         return res.sendStatus(400);
     }
-
-    console.log('REJECT', orderId, reason)
 
     await DB.mongo.collection('orders').updateOne(
         {_id: new ObjectID(orderId)},
