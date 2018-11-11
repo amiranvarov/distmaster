@@ -35,7 +35,7 @@ const CustomersTable = ({ data, page, sizePerPage, onTableChange, totalSize, onS
   <div>
     <BootstrapTable
       remote
-      keyField="id"
+      keyField="_id"
       data={ data }
       columns={ columns }
       filter={ filterFactory() }

@@ -93,7 +93,7 @@ class OrderDetail extends React.Component {
   }
 }
 
-export default connect((state) => ({
-  order: state.order.selected
-}), {unselectOrder})(OrderDetail);
+export default connect((state) => {console.log('state', state);return {
+  order: state.order.list[state.order.selected]
+}}, {unselectOrder})(OrderDetail);
 

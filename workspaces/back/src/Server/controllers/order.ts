@@ -5,17 +5,44 @@ import {ObjectID} from 'mongodb'
 import { renderProductsList} from '../../helpers'
 import Keyboard from '../../lib/Keyboard'
 
-const registeredUser = {
-    login: 'admin',
-    password: 'admin'
-}
+const RECORDS_PER_PAGE = 50;
 
-export const fetchList = async (req, res) => {
-    const page = req.body.page || 1;
+export const fetchList = async ({query: {filter, page = 1}}, res) => {
+    // @ts-ignore
+    page = parseInt(page);
 
-    const orders = await Order.getAll();
+    if (filter) {
+        filter = JSON.parse(filter);
+        for (let key in filter ) {
+            const value = filter[key];
 
-    res.json({list: orders, current: 1})
+            if (key === 'status' && value === 'all') {
+                continue;
+            }
+            filter[key] = new RegExp(value,"ig");
+        }
+    } else {
+        filter = {}
+    }
+
+    console.log('filter', filter)
+    if(filter.status === 'all') {
+        delete filter.status;
+    }
+
+    const total = await DB.mongo.collection('orders').count(filter);
+
+    let orders = await DB.mongo.collection('orders')
+        .find(filter)
+        .project({action: 0})
+        .skip((page * RECORDS_PER_PAGE) - RECORDS_PER_PAGE)
+        .sort({create_time: -1})
+        .limit(RECORDS_PER_PAGE)
+        .toArray();
+
+    orders = await Promise.all(orders.map(async order => await Order.populateOrder(order)));
+
+    res.json({list: orders, page, total})
 };
 
 export const approve = async (req, res) => {

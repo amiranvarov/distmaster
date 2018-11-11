@@ -41,5 +41,5 @@ class OrderApproveForm extends React.Component {
 }
 
 export default connect(state => ({
-  selectedOrder: state.order.selected
+  selectedOrder: state.order.list[state.order.selected]
 }), {approveOrder})(OrderApproveForm)

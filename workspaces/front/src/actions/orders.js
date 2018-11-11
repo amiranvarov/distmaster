@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {FETCH_CLIENTS_SUCCESS} from "./clients.action";
 
 export const FETCH_ORDERS_REQUST = 'FETCH_ORDERS_REQUST';
 export const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS';
@@ -22,12 +23,13 @@ export const fetchOrders = (filter = {}) => async (dispatch) => {
     dispatch({
       type: FETCH_ORDERS_REQUST,
     });
-    const {list, current} = (await axios.get('/api/orders', filter)).data;
+    const {list, page, total} = (await axios.get('/api/orders', {params: filter})).data;
     dispatch({
       type: FETCH_ORDERS_SUCCESS,
       payload: {
         list,
-        current
+        page,
+        total
       }
     })
   } catch (error) {
@@ -40,6 +42,7 @@ export const fetchOrders = (filter = {}) => async (dispatch) => {
 };
 
 export const selectOrder = (order) => {
+  console.log('Select order')
   return {
     type: SELECT_ORDER,
     payload: order

@@ -7,14 +7,15 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
+  NavLink as BootNavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
 import {connect} from 'react-redux'
-import { Link } from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
+import './Header.css'
 
 import {logOut} from '../../actions/auth'
 
@@ -26,30 +27,22 @@ const Header = (props) => (
         <NavbarBrand href="/">BETMASTER</NavbarBrand>
         <Nav navbar>
           <NavItem>
-            <NavLink>
-              <Link to={"/orders"}>Заказы</Link>
-            </NavLink>
+            <NavLink exact activeClassName={"active"} to={"/orders"}>Заказы</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink>
-              <Link to={"/clients"}>Клиенты</Link>
-            </NavLink>
+            <NavLink exact activeClassName={"active"} to={"/clients"}>Клиенты</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink>
-              <Link to={"/products"}>Склад</Link>
-            </NavLink>
+            <NavLink exact activeClassName={"active"} to={"/products"}>Склад</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink>
-              <Link to={"/agents"}>Агенты</Link>
-            </NavLink>
+            <NavLink exact activeClassName={"active"} to={"/agents"}>Агенты</NavLink>
           </NavItem>
         </Nav>
 
         <Nav className="ml-auto" navbar>
           <NavItem>
-            {props.loggedIn && <NavLink style={{cursor: 'pointer'}} onClick={props.logOut}>Выйти</NavLink>}
+            {props.loggedIn && <BootNavLink style={{cursor: 'pointer'}} onClick={props.logOut}>Выйти</BootNavLink>}
           </NavItem>
         </Nav>
       </Container>
@@ -67,4 +60,4 @@ const mapDispatchToProps = {
 
 const enhance = connect(mapStateToProps, mapDispatchToProps);
 
-export default enhance(Header);
+export default withRouter(enhance(Header));

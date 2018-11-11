@@ -10,48 +10,54 @@ import Status from '../Status'
 import OrderDetail from './OrderDetail'
 
 import './OrderList.css'
+import OrderTable from "../Order/OrdersTable";
 
 class OrderList extends React.Component {
 
   componentDidMount () {
-    this.props.fetchOrders()
+    // this.props.fetchOrders()
   }
 
+  handleTableChange = (type, state) => {
+    const transformedFilter = {};
+    for (let key in state.filters) {
+      const value = state.filters[key].filterVal;
+      if (value.trim() == '') {
+        return false;
+      }
+      // const indexOfFirstDot =  key.indexOf('.');
+      // const restOfName = key.substr(indexOfFirstDot +1, key.length)
+
+      transformedFilter[key] = value
+    }
+
+    this.props.fetchOrders({
+      filter: transformedFilter,
+      page: state.page
+    })
+  };
+
+  onSelect = (customer, index) => {
+    this.props.selectOrder(index)
+  };
+
   render () {
-    const { orders, selectedOrder, selectOrder } = this.props
+    const { list, page, total, selectedOrder } = this.props
     return (
       <div>
         <h1>Заказы</h1>
         <br />
         <br />
-        <Table>
-          <thead>
-            <tr>
-              <th>Дата</th>
-              <th>Клиент</th>
-              <th>Регион</th>
-              <th>Сумма</th>
-              <th>Ф/О</th>
-              <th>Cтатус</th>
-            </tr>
-          </thead>
-          <tbody>
-          {orders &&
-            orders.map((order) => (
-              <tr key={order._id} onClick={() => selectOrder(order)} className="OrderListItem">
-                <td>
-                  <div>{moment(order.create_time).format('YYYY-MM-DD hh:mm')}</div>
-                </td>
-                <td>{order.user.shop.name}</td>
-                <td>{order.user.shop.region}</td>
-                <td>{getOrderTotalPrice(order.products, 'shop').toLocaleString()}</td>
-                <td>{order.payment_type  == 'transfer' ? 'ПЕРЕЧ' : 'НАЛ'}</td>
-                <th><Status status={order.status}/></th>
-              </tr>
-            ))
-          }
-          </tbody>
-        </Table>
+        {list && (
+          <OrderTable
+            data={list}
+            page={page}
+            sizePerPage={50}
+            onTableChange={this.handleTableChange}
+            totalSize={total}
+            onSelect={this.onSelect}
+          />
+        )}
 
         {selectedOrder && <OrderDetail />}
 
@@ -63,8 +69,11 @@ class OrderList extends React.Component {
 
 
 export default connect(state => {console.log('state', state); return {
-  orders: state.order.list,
-  selectedOrder: state.order.selected
+
+    list: state.order.list,
+    total: state.order.total,
+    page: state.order.page,
+    selectedOrder: state.order.list[state.order.selected]
 }},
   {
     fetchOrders,

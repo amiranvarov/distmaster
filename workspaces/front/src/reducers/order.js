@@ -17,6 +17,7 @@ import {
 } from '../actions/orders'
 
 import _ from 'lodash'
+import {deepUpdate} from "immupdate";
 
 const initialState = {
   loading: false,
@@ -25,7 +26,10 @@ const initialState = {
   current: 0
 };
 
+
 export default (state = initialState, action) => {
+
+  let orderIndex = null;
 
   switch (action.type) {
     case FETCH_ORDERS_REQUST:
@@ -37,7 +41,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         list: action.payload.list,
-        current: action.payload.current
+        page: action.payload.page,
+        total: action.payload.total,
       };
     case FETCH_ORDERS_FAIL:
       return {
@@ -57,16 +62,25 @@ export default (state = initialState, action) => {
       };
 
     case APPROVE_ORDER_SUCCESS:
+      orderIndex = state.list.findIndex(order => order._id === action.payload.orderId);
+      state.list = deepUpdate(state.list)
+        .at(orderIndex)
+        .at('status')
+        .set('approve');
+
       return {
         ...state,
-        list: _.filter(state.list, function (f) { return f._id !== action.payload.orderId; }),
         selected: null
       };
 
     case REJECT_ORDER_SUCCESS:
+      orderIndex = state.list.findIndex(order => order._id === action.payload.orderId);
+      state.list = deepUpdate(state.list)
+        .at(orderIndex)
+        .at('status')
+        .set('reject');
       return {
         ...state,
-        list: _.filter(state.list, function (f) { return f._id !== action.payload.orderId; }),
         selected: null
       };
 

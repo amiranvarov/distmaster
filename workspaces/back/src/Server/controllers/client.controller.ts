@@ -11,8 +11,6 @@ const RECORDS_PER_PAGE = 50;
 
 export const fetchList = async ({query: {filter, page = 1}}, res) => {
 
-
-
     if (filter) {
         filter = JSON.parse(filter);
         for (let key in filter ) {
@@ -87,8 +85,6 @@ export const reject = async (req, res) => {
     if (!orderId || !reason) {
         return res.sendStatus(400);
     }
-
-    console.log('REJECT', orderId, reason)
 
     await DB.mongo.collection('orders').updateOne(
         {_id: new ObjectID(orderId)},
