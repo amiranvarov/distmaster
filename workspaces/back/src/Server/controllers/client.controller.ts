@@ -23,6 +23,10 @@ export const fetchList = async ({query: {filter, page = 1}}, res) => {
         filter = {}
     }
 
+    filter['shop.region'] = {
+        '$exists': true
+    };
+
     const total = await DB.mongo.collection('users').count(filter);
 
     let clients = await DB.mongo.collection('users')
